@@ -1,0 +1,281 @@
+body {
+    background-color: rgb(2, 21, 38);
+}
+
+h1 {
+    color: rgb(226, 226, 182);
+    margin: 0; /* Remove extra margins */
+    font-size: 16px; /* Adjust font size */
+    line-height: 28px; /* Align with icon height */
+}
+
+* {
+    font-family: "Rubik", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.ErrorIcon{
+  width: 100%;
+  height: 100%;
+}
+
+.serverDisplayLiner{
+  width: 80%;
+  height: 5px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  background-color: rgb(255, 255, 255);
+}
+
+.playerContainer {
+  display: flex;      /* Use flexbox for text and line alignment */
+    justify-content: center;
+    align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); /* Adjust size of grid items */
+  grid-gap: 1px; /* Space between items */
+  padding: 10px; /* Padding around the grid */
+  position: relative;
+}
+
+.playerDisplay {
+  height: 50px;
+  width: 50px;
+  background-color: #f0f0f0; /* Background color for the player display */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  text-align: center; /* Center the text inside each display */
+  font-family: Arial, sans-serif; /* Font style */
+  font-size: 16px; /* Font size */
+  margin-left: 5px;
+  margin-right: 5px;
+  transition: transform 0.3s ease; /* Smooth scaling effect on hover */
+}
+
+.playerDisplay:hover {
+  transform: scale(1.05); /* Slightly zoom in when hovering */
+}
+
+.serverDisplay{
+  width: 95%;
+  height: auto;
+  padding: 20px 20px;
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  outline: none; 
+  border: none;  
+  background-color: rgb(2, 21, 38);
+  color: rgb(226, 226, 182);
+  position: relative;
+  box-shadow: 0px 0px 0px rgb(110, 172, 218);
+  transition-duration: 0.5s;
+}
+
+
+.serverDisplay:hover{
+  box-shadow: 0px 0px 20px rgb(110, 172, 218);
+}
+
+.serverDisplay:active{
+  box-shadow: 0px 0px 15px rgb(122, 188, 240);
+}
+
+.serverDisplay:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+
+
+.serverDisplay:hover:before {
+  opacity: 1;
+}
+
+.serverDisplay:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(2, 21, 38);
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.serverDisplayContainer{
+  width: 100%;
+  height: 100%;
+  
+}
+
+
+
+.ServerError{
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  color: white;
+}
+
+.MainContentContainer {
+    color: rgb(226, 226, 182);
+    background-color: rgb(3, 52, 110);
+    padding: 10px 20px; /* Add padding to account for the icon */
+    margin-top: 10px;
+    width: 95%;
+    height: 50%;
+    border-radius: 15px;
+    display: flex;      /* Use flexbox for text and line alignment */
+    gap: 50px;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Required for absolutely positioned child */
+        left: 50%;
+        transform: translate(-50%, 0%);
+        
+    z-index: 0;
+}
+
+.BubbleContainer {
+    color: rgb(226, 226, 182);
+    background-color: rgb(3, 52, 110);
+    padding: 10px 20px; /* Add padding to account for the icon */
+    margin-left: 10px;
+    border-radius: 15px;
+    display:inline-flex;      /* Use flexbox for text and line alignment */
+    align-items: center;
+    position: relative; /* Required for absolutely positioned child */
+    z-index: 0;
+}
+
+.BubbleContainerButton {
+    margin-left: 10px;
+    color: rgb(226, 226, 182);
+    background-color: rgb(3, 52, 110);
+    box-shadow: 0px 0px 0px rgb(110, 172, 218);
+    padding: 10px 20px; /* Add padding to account for the icon */
+    outline: none; /* Remove the outline */
+    border: none;  /* Optionally remove the border */
+    border-radius: 15px;
+    display:inline-flex;      /* Use flexbox for text and line alignment */
+    align-items: center;
+    position: relative; /* Required for absolutely positioned child */
+    transition-duration: 0.25s;
+    z-index: 0;
+    
+}
+
+
+
+.BubbleContainerButton:hover{
+    box-shadow: 0px 0px 20px rgb(110, 172, 218);
+    transform: scale(1.05);
+}
+
+.BubbleContainerButton:active{
+    box-shadow: 0px 0px 15px rgb(122, 188, 240);
+    transform: scale(0.95);
+}
+
+.BubbleContainerTextIcon {
+    color: rgb(226, 226, 182);
+    margin: 0; /* Remove extra margins */
+    font-size: 16px; /* Adjust font size */
+    line-height: 28px; /* Align with icon height */
+    margin-left: 20px;
+}
+
+.IconDisplay {
+    width: 25px;
+    height: 28px;
+    position: absolute; /* Remove from the normal flow */
+    top: 50%;           /* Center vertically within the container */
+    left: 10px;         /* Position it relative to the container */
+    transform: translateY(-50%); /* Adjust for proper centering */
+    z-index: 1;         /* Ensure it's above the background */
+}
+
+
+.dot-bricks {
+    position: relative;
+    top: 8px;
+    left: -9999px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #9880ff;
+    color: #9880ff;
+    box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+    animation: dot-bricks 2s infinite ease;
+  }
+  
+  @keyframes dot-bricks {
+    0% {
+      box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+    }
+    8.333% {
+      box-shadow: 10007px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+    }
+    16.667% {
+      box-shadow: 10007px -16px 0 0 #9880ff, 9991px -16px 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+    }
+    25% {
+      box-shadow: 10007px -16px 0 0 #9880ff, 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff;
+    }
+    33.333% {
+      box-shadow: 10007px 0 0 0 #9880ff, 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff;
+    }
+    41.667% {
+      box-shadow: 10007px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff;
+    }
+    50% {
+      box-shadow: 10007px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff, 9991px -16px 0 0 #9880ff;
+    }
+    58.333% {
+      box-shadow: 9991px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff, 9991px -16px 0 0 #9880ff;
+    }
+    66.666% {
+      box-shadow: 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff, 9991px -16px 0 0 #9880ff;
+    }
+    75% {
+      box-shadow: 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff;
+    }
+    83.333% {
+      box-shadow: 9991px -16px 0 0 #9880ff, 10007px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff;
+    }
+    91.667% {
+      box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px -16px 0 0 #9880ff;
+    }
+    100% {
+      box-shadow: 9991px -16px 0 0 #9880ff, 9991px 0 0 0 #9880ff, 10007px 0 0 0 #9880ff;
+    }
+  }
