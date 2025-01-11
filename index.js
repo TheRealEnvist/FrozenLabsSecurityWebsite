@@ -2,20 +2,29 @@ const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 
-async function getRequest(url) {
+async function getRequest(url, nocors) {
     try {
-        const response = await fetch(url, {
-            mode: 'cors' // Ensure CORS mode
-        });
+        var response;
+        if(nocors){
+            response = await fetch(url, {
+                mode: 'no-cors' // Ensure CORS mode
+            });
+        }else{
+            response = await fetch(url, {
+                mode: 'cors' // Ensure CORS mode
+            });
+        }
+        
         if (!response.ok) {
             const errorData = await response.json(); // Attempt to parse the error response
             throw { status: response.status, data: errorData };
         }
         const data = await response.json(); // Parse the JSON response
+        data.status = response.status
         return data;
     } catch (error) {
         console.error('GET request failed:', error);
-        return error.data || { message: 'An error occurred', status: error.status || 'unknown' };
+        return { message: 'An error occurred', status: error.status || 'unknown' };
     }
 }
 
@@ -43,15 +52,14 @@ async function postRequest(url, payload) {
 }
 
 async function loadPlayers(element, gameID, serverID){
-    var serverrespond = await getRequest(apiService+"games/"+gameID+"/server/"+serverID+"/players"); 
-    const list = serverrespond.players;
-    const serverDisplay = document.getElementById("playerDisplayRefrence")
+    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots");
+    const list = headshots.headshots
+    const serverDisplay =  document.getElementById("playerDisplayRefrence")
     element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").hidden = true
     for (let i = 0; i < list.length; i++) {
         const serverClone = serverDisplay.cloneNode(true)
-        serverClone.hidden = false
-        var headshot = await getRequest("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds="+list[i]+"&size=50x50&format=Png&isCircular=false"); 
-        serverClone.src = headshot["data"]["imageUrl"]
+        serverClone.hidden = false 
+        serverClone.src = list[i]["imageUrl"]
         element.querySelector("#playerContainer").appendChild(serverClone)
       }
 }
