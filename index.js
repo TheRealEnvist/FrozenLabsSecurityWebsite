@@ -43,7 +43,17 @@ async function postRequest(url, payload) {
 }
 
 async function loadPlayers(element, gameID, serverID){
-
+    var serverrespond = await getRequest(apiService+"games/"+gameID+"/server/"+serverID+"/players"); 
+    const list = serverrespond.players;
+    const serverDisplay = document.getElementById("playerDisplayRefrence")
+    element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").hidden = true
+    for (let i = 0; i < list.length; i++) {
+        const serverClone = serverDisplay.cloneNode(true)
+        serverClone.hidden = false
+        var headshot = await getRequest("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds="+list[i]+"&size=50x50&format=Png&isCircular=false"); 
+        serverClone.src = headshot["data"]["imageUrl"]
+        element.querySelector("#playerContainer").appendChild(serverClone)
+      }
 }
 
 
