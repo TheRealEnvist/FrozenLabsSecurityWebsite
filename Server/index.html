@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="/style.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-        <script src="index.js"></script>
+        <script src="/Server/index.js"></script>
         <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerDisplay" id="playerDisplayRefrence" hidden="true">
-        <button class="serverDisplay" id="serverDisplayReference" hidden="true" onclick="onServerClick(this)">
+        <button class="serverDisplay" id="serverDisplayReference" hidden="true">
             <h1 id="serverID">[serverID]</h1>
             <div class="serverDisplayLiner"></div>
             <div class="playerContainer" id="playerContainer">
                 <div class="dot-bricks" id="playerLoadingIcon"></div>
             </div>
         </button>
+        <div class="playerServerDisplayContainer" id="playerListDisplatReference">
+            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerServerDisplay" id="playerDisplayRefrence">
+            <h1 class="playerServerDisplayText" >Envist</h1>
+            <h1 class="playerServerUserDisplayText">@TheRealEnvist</h1>
+        </div>
+        <div class="ServerError" id="serverError" hidden="true">
+            <img src="/Assets/error.svg" class="ErrorIcon">
+            Server Error
+        </div>
     </head>
     <body onload="onLoad()">
         
         <div class="BubbleContainer">
-            <img src="Assets/icon.png" class="IconDisplay">
+            <img src="/Assets/icon.png" class="IconDisplay">
             <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
         </div>
         <button class="BubbleContainerButton">
@@ -26,13 +35,10 @@
         </button>
         
         <div class="MainContentContainer">
-            <div class="dot-bricks" id="loadingIcon"></div>
-            <div class="ServerError" id="serverError" hidden="true">
-                <img src="Assets/error.svg" class="ErrorIcon">
-                Server Error
-            </div>
-            <div class="serverDisplayContainer" id="severDisplayList">
-                
+
+            <div class="PlayerContentContainer">
+
+                <div class="dot-bricks" id="loadingIcon"></div>
             </div>
         </div>
     </body>

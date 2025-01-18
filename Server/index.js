@@ -64,49 +64,8 @@ async function loadPlayers(element, gameID, serverID){
       }
 }
 
-function onServerClick(element){
-    const serverIDElement = element.querySelector('#serverID');
-    if (!serverIDElement) {
-        console.error('Server ID element not found.');
-        return;
-    }
-    const serverID = serverIDElement.textContent.trim(); // Trim to avoid extra spaces
-    console.log('Server ID:', serverID);
-
-    const gameID = params.get('gameID');
-    if (!gameID) {
-        console.error('Game ID not found in URL.');
-        return;
-    }
-    console.log('Game ID:', gameID);
-
-    // Construct new URL
-    const newUrl = `${window.location.origin}/server/index.html?gameID=${encodeURIComponent(gameID)}&serverID=${encodeURIComponent(serverID)}`;
-    console.log('Redirecting to:', newUrl);
-
-    // Redirect
-    window.location.href = newUrl;
-}
-
 async function onLoad(){
-    if(params.get("ip")!=null){
-        apiService = params.get("ip")
-    }
-    var serverrespond = await getRequest(apiService+"status");   
-    if(serverrespond.status){
-        document.getElementById("loadingIcon").hidden = true;
-        serverrespond = await getRequest(apiService+"games/" + params.get("gameID")+"/servers");
-        const list = serverrespond.servers;
-        const serverDisplay = document.getElementById("serverDisplayReference")
-        for (let i = 0; i < list.length; i++) {
-            const serverClone = serverDisplay.cloneNode(true)
-            serverClone.hidden = false
-            serverClone.querySelector('#serverID').textContent = list[i]["id"];
-            document.getElementById("severDisplayList").appendChild(serverClone)
-            loadPlayers(serverClone, params.get("gameID"),list[i]["id"]);
-          }
-    }else{
-        document.getElementById("serverError").hidden = false;
-        document.getElementById("loadingIcon").hidden = true;
-    }
+    const serverID = params.get("serverID")
+    const gameID = params.get("gameID")
+    document.getElementById('playerListDisplatReference').style.display = 'none';
 }
