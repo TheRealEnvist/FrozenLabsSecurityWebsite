@@ -1,6 +1,13 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
+const serverID = params.get("serverID")
+const gameID = params.get("gameID")
+const serverchat = io(apiService + `games/${gameID}/server/${serverID}/chat-server`);
+
+serverchat.on('chat-message', (message) => {
+    console.log('New message received:', message);
+  });
 
 async function getRequest(url, nocors) {
     try {
@@ -51,21 +58,67 @@ async function postRequest(url, payload) {
     }
 }
 
-async function loadPlayers(element, gameID, serverID){
+async function loadPlayers(gameID, serverID){
     var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots");
     const list = headshots.headshots
-    const serverDisplay =  document.getElementById("playerDisplayRefrence")
-    element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").hidden = true
-    for (let i = 0; i < list.length; i++) {
-        const serverClone = serverDisplay.cloneNode(true)
-        serverClone.hidden = false 
-        serverClone.src = list[i]["imageUrl"]
-        element.querySelector("#playerContainer").appendChild(serverClone)
-      }
+    const PlayerDisplayContainer = document.getElementById("playerListDisplatReference").cloneNode(true);
+    const ServerPlayerList = document.getElementById("PlayerContentContainer");
+    document.getElementById("loadingIcon").hidden = true;
+    document.getElementById("loadingIcon").style.display = "none";
+    list.forEach((data, index, array) => {
+        const PlayerDisplay = PlayerDisplayContainer.cloneNode(true);
+        PlayerDisplay.style.display = ''
+        PlayerDisplay.hidden = false;
+        PlayerDisplay.querySelector("#playerDisplayRefrence").src = data["imageUrl"]
+        PlayerDisplay.querySelector("#playerServerDisplayText").textContent = data["PlayerInformation"]["Display"]
+        PlayerDisplay.querySelector("#playerServerUserDisplayText").textContent = "@" + data["PlayerInformation"]["Username"]
+        ServerPlayerList.appendChild(PlayerDisplay);
+    });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const chatBox = document.querySelector(".RobloxChatMessage");
+    const originalHeight = "20px"; // Store the original height for resetting
+
+    chatBox.addEventListener("keydown", function (event) {
+      // Check if the user presses "Enter" without "Shift"
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); // Prevent default action (adding a new line)
+
+        // Simulate sending the message (e.g., log to console)
+        console.log("Message sent:", chatBox.value);
+
+        // Reset textarea content and height
+        chatBox.value = "";
+        chatBox.style.height = originalHeight;
+
+        // Optionally unfocus the textarea
+        chatBox.blur();
+      }
+    });
+
+    let isAdjusting = false;
+
+chatBox.addEventListener("input", function () {
+  if (!isAdjusting) {
+    isAdjusting = true;
+
+    requestAnimationFrame(function adjustHeight() {
+      chatBox.style.height = chatBox.scrollHeight - 10 + "px";
+
+      if (chatBox.scrollHeight !== parseInt(chatBox.style.height)) {
+        requestAnimationFrame(adjustHeight);
+      } else {
+        isAdjusting = false;
+      }
+    });
+  }
+});
+
+  });
+
 async function onLoad(){
-    const serverID = params.get("serverID")
-    const gameID = params.get("gameID")
     document.getElementById('playerListDisplatReference').style.display = 'none';
+    document.getElementById('MessageTemplate').style.display = 'none';
+    loadPlayers(gameID, serverID)
 }

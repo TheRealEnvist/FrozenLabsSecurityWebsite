@@ -25,13 +25,176 @@ h1 {
 .serverDisplayLiner{
   width: 80%;
   height: 5px;
-  position: relative;
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 15px;
   background-color: rgb(255, 255, 255);
+}
+
+/* Player content */
+.PlayerContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  width: auto;
+  height: auto;
+  align-self: flex-start;
+  position: relative;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+}
+
+.ServerMainContentContainer {
+  color: rgb(226, 226, 182);
+  background-color: rgb(3, 52, 110);
+  padding: 10px 20px; /* Padding to account for the icon */
+  margin-top: 10px;
+  width: 95%;
+  height: 50%;
+  border-radius: 15px;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: row; /* Keeps overall container vertical */
+  gap: 20px; /* Adjusted gap between sections */
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative; /* Required for absolutely positioned child */
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 0;
+}
+
+.BubbleContainerDark{
+  background-color: rgb(2, 21, 38);
+  border-radius: 15px;
+  display: flex;
+  padding: 10px;
+  position: relative;
+}
+
+.PlayerChatContainerFiller {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1px;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+  padding: 10px;
+  flex: 1; /* Allows the filler to take up available space */
+}
+
+.PlayerChatContainer {
+  display: flex;
+  flex-direction: column; /* Stacks username and message vertically */
+  align-items: flex-start;
+  margin-top: 5px;
+  border-radius: 15px;
+  background-color: rgb(3, 52, 110);
+  padding: 10px;
+  gap: 5px; /* Adds spacing between username and message */
+  color: white; /* Ensures text is visible */
+}
+
+.UserName {
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(226, 226, 182);
+  white-space: nowrap; /* Keeps the username on a single line */
+}
+
+.MessageContent {
+  font-size: 12px;
+  line-height: 1.5; /* Improves readability for longer messages */
+  word-wrap: break-word; /* Ensures long text wraps to fit the container */
+}
+
+
+
+.PlayerContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  width: auto;
+  height: auto;
+  align-self: flex-start;
+  position: relative;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+}
+
+.ChatContentContainer {
+  float: left;
+  shape-outside: circle(50%);
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
+  width: 850px;
+  height: 500px;
+  align-self: center;
+  justify-self: center;
+  position: relative;
+  overflow-x: hidden; /* Hides horizontal scrolling */
+  overflow-y: scroll; /* Allow vertical scrolling */
+  display: flex;
+  flex-direction: column-reverse; 
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+}
+
+.RobloxChat{
+  padding: 10px;
+  width: 850px;
+  height: 500px;
+  position: relative;
+  flex-direction: column;
+  display: flex;
+}
+
+.RobloxChatMessage {
+  width: 840px;
+  height: 20px; /* Initial height */
+  position: relative;
+  justify-self: baseline;
+  margin-top: 10px;
+  background-color: rgb(2, 21, 38);
+  border-radius: 15px;
+  outline-style: none;
+  border: 0px solid rgb(80, 130, 180);
+  color: rgb(226, 226, 182);
+  text-align: left;
+  padding: 5px 10px;
+  resize: none; /* Disable manual resizing */
+  overflow: hidden; /* Prevent scrollbars */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.RobloxChatMessage:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(80, 130, 180, 0.5);
+}
+
+.ChatContentContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sChatContentContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.ChatContentContainer::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.ChatContentContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .playerContainer {
@@ -41,21 +204,8 @@ h1 {
   grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); /* Adjust size of grid items */
   grid-gap: 1px; /* Space between items */
   padding: 10px; /* Padding around the grid */
+  margin-top: 25px;
   position: relative;
-}
-
-.PlayerContentContainer {
-  display: flex; 
-  flex-direction: column; 
-  justify-content: flex-start; 
-  align-items: center; 
-  padding: 10px; 
-  width: auto; 
-  height: auto; 
-  align-self: flex-start; 
-  position: relative; 
-  border-radius: 15px; 
-  background-color: rgb(2, 21, 38);
 }
 
 .playerServerDisplayContainer{
@@ -203,6 +353,7 @@ h1 {
   width: 100px;
   height: 100px;
   text-align: center;
+  padding-bottom: 25px;
   color: white;
 }
 
@@ -288,7 +439,11 @@ h1 {
 
 .dot-bricks {
     position: relative;
-    top: 8px;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    top: -50%;
+    transform: translate(0px, 50%);
     left: -9999px;
     width: 10px;
     height: 10px;

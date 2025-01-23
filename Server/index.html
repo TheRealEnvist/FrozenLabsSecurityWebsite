@@ -5,24 +5,30 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>
         <script src="/Server/index.js"></script>
         <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerDisplay" id="playerDisplayRefrence" hidden="true">
-        <button class="serverDisplay" id="serverDisplayReference" hidden="true">
-            <h1 id="serverID">[serverID]</h1>
-            <div class="serverDisplayLiner"></div>
-            <div class="playerContainer" id="playerContainer">
-                <div class="dot-bricks" id="playerLoadingIcon"></div>
-            </div>
-        </button>
         <div class="playerServerDisplayContainer" id="playerListDisplatReference">
             <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerServerDisplay" id="playerDisplayRefrence">
-            <h1 class="playerServerDisplayText" >Envist</h1>
-            <h1 class="playerServerUserDisplayText">@TheRealEnvist</h1>
+            <h1 class="playerServerDisplayText" id="playerServerDisplayText" >Envist</h1>
+            <h1 class="playerServerUserDisplayText" id="playerServerUserDisplayText">@TheRealEnvist</h1>
         </div>
         <div class="ServerError" id="serverError" hidden="true">
             <img src="/Assets/error.svg" class="ErrorIcon">
             Server Error
         </div>
+
+        <div class="PlayerChatContainer" id="MessageTemplate" hidden = "true">
+            <div class="BubbleContainerDark">
+                <div class="UserName">Envist @TheRealEnvist</div>
+            </div>
+            <div class="BubbleContainerDark">
+                <div class="MessageContent">
+                    Hello
+                </div>
+            </div>   
+        </div>
+
     </head>
     <body onload="onLoad()">
         
@@ -34,12 +40,21 @@
             <h1>Servers</h1>
         </button>
         
-        <div class="MainContentContainer">
+        <div class="ServerMainContentContainer">
 
-            <div class="PlayerContentContainer">
+            <div class="PlayerContentContainer" id="PlayerContentContainer">
 
                 <div class="dot-bricks" id="loadingIcon"></div>
             </div>
+            <div class="RobloxChat" id="RobloxChat">
+                <div class="ChatContentContainer" id="ChatContentContainer">
+                
+                    <div class="dot-bricks" id="loadingIcon"></div>
+                    
+                </div>  
+                <textarea class="RobloxChatMessage" placeholder="Come on engage with chat.."></textarea>
+            </div>
+                   
         </div>
     </body>
 </html>

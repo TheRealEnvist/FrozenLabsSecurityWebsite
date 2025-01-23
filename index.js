@@ -56,6 +56,7 @@ async function loadPlayers(element, gameID, serverID){
     const list = headshots.headshots
     const serverDisplay =  document.getElementById("playerDisplayRefrence")
     element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").hidden = true
+    element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").style.display = "none"
     for (let i = 0; i < list.length; i++) {
         const serverClone = serverDisplay.cloneNode(true)
         serverClone.hidden = false 
@@ -94,19 +95,25 @@ async function onLoad(){
     }
     var serverrespond = await getRequest(apiService+"status");   
     if(serverrespond.status){
-        document.getElementById("loadingIcon").hidden = true;
         serverrespond = await getRequest(apiService+"games/" + params.get("gameID")+"/servers");
-        const list = serverrespond.servers;
+        document.getElementById("loadingIcon").hidden = true;
+        document.getElementById("loadingIcon").style.display = "none";
+        console.log(serverrespond);
         const serverDisplay = document.getElementById("serverDisplayReference")
-        for (let i = 0; i < list.length; i++) {
+        if(serverrespond.servers.errors != null){
+            document.getElementById("serverError").hidden = false;
+            document.getElementById("serverError").querySelector('#ErrorMessage').textContent = serverrespond.servers.errors["0"].message;
+        }
+        serverrespond["servers"]["data"].forEach((data, index, array) => {
             const serverClone = serverDisplay.cloneNode(true)
             serverClone.hidden = false
-            serverClone.querySelector('#serverID').textContent = list[i]["id"];
+            serverClone.querySelector('#serverID').textContent = data["id"];
             document.getElementById("severDisplayList").appendChild(serverClone)
-            loadPlayers(serverClone, params.get("gameID"),list[i]["id"]);
-          }
+            loadPlayers(serverClone, params.get("gameID"),data["id"]);
+        });
     }else{
         document.getElementById("serverError").hidden = false;
         document.getElementById("loadingIcon").hidden = true;
+        document.getElementById("loadingIcon").style.display = "none";
     }
 }
