@@ -1,21 +1,90 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
-const serverID = params.get("serverID")
-const gameID = params.get("gameID")
-const serverchat = io(apiService + `games/${gameID}/server/${serverID}/chat-server`);
+var serverID = params.get("serverID")
+var gameID = params.get("gameID")
+const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server`, {
+    reconnection: true,             // Enable automatic reconnection
+    reconnectionAttempts: Infinity, // Keep trying indefinitely
+    reconnectionDelay: 1000,        // Start with a 1-second delay
+    reconnectionDelayMax: 1000,     // Maximum delay of 1 seconds
+    timeout: 5000,                 // Connection timeout (5 seconds)
+});
 
+
+// Listen for successful connection
+serverchat.on('connect', () => {
+    console.log('Connected to the chat server.');
+    const ChatContentContainer = document.getElementById("ChatContentContainer");
+    ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
+    ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
+    const connectedElement = document.createElement("div");
+    connectedElement.textContent = "Connected!";
+    connectedElement.style.color = "lightgreen";
+    ChatContentContainer.insertBefore(connectedElement, ChatContentContainer.firstChild);
+    
+});
+
+// Handle reconnection attempts
+serverchat.on('reconnect_attempt', (attemptNumber) => {
+    console.log(`Reconnection attempt #${attemptNumber}`);
+    const ChatContentContainer = document.getElementById("ChatContentContainer");
+    ChatContentContainer.querySelector("#loadingIcon").style.display = "flex";
+    ChatContentContainer.querySelector("#loadingIcon").hidden = "false";
+    
+});
+
+// Handle successful reconnection
+serverchat.on('reconnect', (attemptNumber) => {
+    console.log(`Reconnected after ${attemptNumber} attempts.`);
+    const ChatContentContainer = document.getElementById("ChatContentContainer");
+    ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
+    ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
+    
+});
+
+// Handle reconnection errors
+serverchat.on('reconnect_error', (error) => {
+    console.error('Reconnection failed:', error);
+});
+
+// Handle permanent disconnection
+serverchat.on('disconnect', (reason) => {
+    console.warn(`Disconnected: ${reason}`);
+    if (reason === 'io server disconnect') {
+        // If the server manually disconnected the client, try reconnecting
+        serverchat.connect();
+    }
+});
+
+// Handle incoming chat messages
 serverchat.on('chat-message', (message) => {
     const ChatContentContainer = document.getElementById("ChatContentContainer");
     ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
     ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
+    
     const Template = document.getElementById("MessageTemplate").cloneNode(true);
-    ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild)
-    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = message["display"] + " @" + message["username"]
-    Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = message["message"]
-    Template.hidden = "false"
+    ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild);
+    
+    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent =
+        `${message["display"]} @${message["username"]}`;
+    Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent =
+        message["message"];
+    Template.hidden = "false";
     Template.style.display = "flex";
-  });
+});
+
+// Optional: Provide feedback to the user about connection state
+serverchat.on('connect_error', (error) => {
+    console.error('Connection error:', error);
+    serverID = params.get("serverID")
+    gameID = params.get("gameID")
+    const ChatContentContainer = document.getElementById("ChatContentContainer");
+    const errorElement = document.createElement("div");
+    errorElement.textContent = "Connection error. Retrying... (The server may not be registered)";
+    errorElement.style.color = "red";
+    ChatContentContainer.insertBefore(errorElement, ChatContentContainer.firstChild);
+});
 
 async function getRequest(url, nocors) {
     try {
