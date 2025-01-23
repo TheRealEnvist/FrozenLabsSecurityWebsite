@@ -95,6 +95,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Simulate sending the message (e.g., log to console)
         console.log("Message sent:", chatBox.value);
+        const ChatContentContainer = document.getElementById("ChatContentContainer");
+    ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
+    ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
+    const Template = document.getElementById("MessageTemplate").cloneNode(true);
+    ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild)
+    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = "Yeah ts aint ready yet"
+    Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = chatBox.value
+    Template.hidden = "false"
+    Template.style.display = "flex";
 
         // Reset textarea content and height
         chatBox.value = "";
