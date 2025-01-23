@@ -116,4 +116,5 @@ async function onLoad(){
         document.getElementById("loadingIcon").hidden = true;
         document.getElementById("loadingIcon").style.display = "none";
     }
+    
 }

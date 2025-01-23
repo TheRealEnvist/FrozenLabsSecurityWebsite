@@ -6,7 +6,15 @@ const gameID = params.get("gameID")
 const serverchat = io(apiService + `games/${gameID}/server/${serverID}/chat-server`);
 
 serverchat.on('chat-message', (message) => {
-    console.log('New message received:', message);
+    const ChatContentContainer = document.getElementById("ChatContentContainer");
+    ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
+    ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
+    const Template = document.getElementById("MessageTemplate").cloneNode(true);
+    ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild)
+    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = message["display"] + " @" + message["username"]
+    Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = message["message"]
+    Template.hidden = "false"
+    Template.style.display = "flex";
   });
 
 async function getRequest(url, nocors) {
