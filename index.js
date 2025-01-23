@@ -82,7 +82,7 @@ function onServerClick(element){
     console.log('Game ID:', gameID);
 
     // Construct new URL
-    const newUrl = `${window.location.origin}/server/index.html?gameID=${encodeURIComponent(gameID)}&serverID=${encodeURIComponent(serverID)}`;
+    const newUrl = `${window.location.origin}/Server/index.html?gameID=${encodeURIComponent(gameID)}&serverID=${encodeURIComponent(serverID)}`;
     console.log('Redirecting to:', newUrl);
 
     // Redirect
@@ -116,5 +116,5 @@ async function onLoad(){
         document.getElementById("loadingIcon").hidden = true;
         document.getElementById("loadingIcon").style.display = "none";
     }
-    
+
 }
