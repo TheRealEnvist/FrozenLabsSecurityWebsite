@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
     const Template = document.getElementById("MessageTemplate").cloneNode(true);
     ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild)
-    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = "Yeah ts aint ready yet"
+    Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = "Server"
     Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = chatBox.value
     Template.hidden = "false"
     Template.style.display = "flex";
