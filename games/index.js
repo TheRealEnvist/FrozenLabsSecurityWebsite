@@ -57,26 +57,37 @@ async function postRequest(url, payload) {
     }
 }
 
-
-
-async function onLoad() {
-    
-    if(params.get("code") != null){
-        console.log("https:/api.envistmakes.com/profile/"+params.get("code")+"/register");
-        const verifing = await getRequest("https:/api.envistmakes.com/profile/"+params.get("code")+"/register")
-        console.log(verifing);
-        if(verifing["verified"]){
-            document.cookie = "token="+verifing["token"]+"; Path=/; Secure; SameSite=true"
-            document.cookie = "information="+JSON.stringify(verifing["token-resources"])+"; Path=/; Secure; SameSite=true"
-            const newUrl = `${window.location.origin}/games`;
-            console.log('Redirecting to:', newUrl);
-            window.location.href = newUrl;
-        }else{
-            document.getElementById("serverError").hidden = false;
-            document.getElementById("serverError").querySelector('#ErrorMessage').textContent = "Invaild code";
+async function generateGameProfiles() {
+    const information = JSON.parse(getCookie("information"))
+    const Resources = information["resource_infos"]
+    Resources.forEach(async (data, index, array) => {
+        if(data["resources"]["universe"] != null){
+            data["resources"]["universe"]["ids"].forEach(async (data, index, array) => {
+                const GameCard = document.getElementById('RobloxGameContainer').cloneNode(true)
+                const Information = await getRequest(`${apiService}universe/${data}/information`)
+                var MediaLink;
+                if(Information["Media"]["data"][0] != null){
+                    MediaLink = await getRequest(`${apiService}thumbnails/${Information["Media"]["data"][0]["imageId"]}/`)
+                    if(MediaLink["Media"]["data"][0]["imageUrl"] != null){
+                        GameCard.querySelector("#RobloxGameImage").style.backgroundImage = "url("+MediaLink["Media"]["data"][0]["imageUrl"]+"})";
+                    }
+                }
+                GameCard.querySelector(".RobloxGameTitle").querySelector("#Message").textContent = Information["RootPlace"]["data"][0]["sourceName"];
+                GameCard.querySelector(".RobloxGameDescription").querySelector("#Message").textContent = Information["RootPlace"]["data"][0]["sourceDescription"];
+                GameCard.style.display = "";
+                document.getElementById("MainContentContainer").appendChild(GameCard);
+            });
         }
-    }else{
-        window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri=https%3A%2F%2Fsecurity.envistmakes.com%2Flogin&scope=openid+profile+asset%3Aread+group%3Aread+universe:write&step=accountConfirm";
-    }
+    });
 
+}
+
+async function onLoad(){
+    if(getCookie("token") == null || getCookie("information") == null){
+        const newUrl = `${window.location.origin}/login`;
+        console.log('Redirecting to:', newUrl);
+        window.location.href = newUrl;
+    }else{
+        generateGameProfiles()
+    }
 }

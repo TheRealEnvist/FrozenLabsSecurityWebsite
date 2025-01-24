@@ -14,6 +14,20 @@
                 <div class="dot-bricks" id="playerLoadingIcon"></div>
             </div>
         </button>
+        <div class="RobloxGameContainer" id="RobloxGameContainer" style="display: none;">
+            <div class="RobloxGameImage" id="RobloxGameImage"></div>
+            <div class="RobloxGameImageOutline"></div>
+            <div class="RobloxGameTitle">
+                <h1 class="RobloxGameMessageTitle" id="Message">
+                    [Name]
+                </h1>
+            </div>
+            <div class="RobloxGameDescription">
+                <h1 class="RobloxGameMessage" id="Message">
+                    [Disc]
+                </h1>
+            </div>
+        </div>
     </head>
     <body onload="onLoad()">
         
@@ -22,12 +36,13 @@
             <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
         </div>
         
-        <div class="MainContentContainer">
+        <div class="MainContentContainer" id="MainContentContainer">
             
             <div class="ServerError" id="serverError" hidden="true">
                 <img src="/Assets/error.svg" class="ErrorIcon">
                 <h1 id="ErrorMessage">Server Error</h1>
             </div>
+            
                 
         </div>
     </body>

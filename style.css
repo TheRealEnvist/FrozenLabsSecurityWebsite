@@ -22,6 +22,92 @@ h1 {
   height: 100%;
 }
 
+
+.RobloxGameContainer{
+  background-color: rgb(2, 21, 38);
+  width: 768px;
+  height: 432px; 
+  position: relative;
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(80, 130, 180, 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  word-wrap: break-word; /* Forces long words to break */
+  overflow: hidden; /* Hides any overflowing text */
+  white-space: normal; /* Allows text to wrap to the next line */
+  transition: all 0.3s ease;
+}
+
+.RobloxGameImage{
+  background-color: rgb(2, 21, 38);
+  width: 768px;
+  height: 432px; 
+  left: 0px;
+  padding: 5px 10px;
+  position: absolute;
+  outline-width: 10px;
+  outline-offset: -10px;
+  outline-color: black;
+  outline-style: solid;
+  border-radius: 10px;
+  filter: blur(10px);
+  background-image: url(/Assets/NoImage.png);
+  background-size: contain;
+}
+
+.RobloxGameImageOutline{
+  width: 768px;
+  height: 432px; 
+  left: 0px;
+  padding: 5px 10px;
+  position: absolute;
+  outline-width: 10px;
+  outline-offset: -10px;
+  outline-color: black;
+  outline-style: solid;
+  border-radius: 10px;
+}
+
+.RobloxGameMessage {
+  word-wrap: break-word; /* Forces long words to break */
+  overflow: hidden; /* Hides any overflowing text */
+  white-space: normal; /* Allows text to wrap to the next line */
+  text-align: center; /* Optional: Centers the text horizontally */
+  padding: 10px; /* Adds some padding for spacing */
+  max-width: 100%; /* Ensures the text doesn’t exceed the container width */
+  color: white; /* Customize the text color */
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.RobloxGameMessageTitle {
+  word-wrap: break-word; /* Forces long words to break */
+  overflow: hidden; /* Hides any overflowing text */
+  white-space: normal; /* Allows text to wrap to the next line */
+  text-align: center; /* Optional: Centers the text horizontally */
+  padding: 10px; /* Adds some padding for spacing */
+  max-width: 100%; /* Ensures the text doesn’t exceed the container width */
+  color: white; /* Customize the text color */
+  font-size: 32px; /* Adjust font size as needed */
+}
+
+.RobloxGameTitle{
+  position: relative;
+  justify-self: center;
+  align-self: center;
+}
+
+.RobloxGameDescription{
+  position: relative;
+  justify-self: center;
+  align-self: center;
+}
+
+.RobloxGameContainer:hover{
+  box-shadow: 0 0 10px rgba(80, 130, 180, 0.5);
+}
+
 .serverDisplayLiner{
   width: 80%;
   height: 5px;
@@ -173,6 +259,8 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
+
+
 
 .RobloxChatMessage:focus {
   outline: none;
