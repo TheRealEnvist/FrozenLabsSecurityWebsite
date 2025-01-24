@@ -60,7 +60,7 @@ async function postRequest(url, payload) {
 
 
 async function onLoad() {
-    
+    console.log("Version 1")
     if(params.get("code") != null){
         console.log(apiService+ "profile/"+params.get("code")+"/register");
         const verifing = await getRequest(apiService+ "profile/"+params.get("code")+"/register")
