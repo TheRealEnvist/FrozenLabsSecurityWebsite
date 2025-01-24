@@ -62,8 +62,8 @@ async function postRequest(url, payload) {
 async function onLoad() {
     
     if(params.get("code") != null){
-        console.log("https:/api.envistmakes.com/profile/"+params.get("code")+"/register");
-        const verifing = await getRequest("https:/api.envistmakes.com/profile/"+params.get("code")+"/register")
+        console.log(apiService+ "profile/"+params.get("code")+"/register");
+        const verifing = await getRequest(apiService+ "profile/"+params.get("code")+"/register")
         console.log(verifing);
         if(verifing["verified"]){
             document.cookie = "token="+verifing["token"]+"; Path=/; Secure; SameSite=true"
