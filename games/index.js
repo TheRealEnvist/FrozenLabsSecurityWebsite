@@ -75,6 +75,11 @@ async function generateGameProfiles() {
                 GameCard.querySelector(".RobloxGameTitle").querySelector("#Message").textContent = Information["RootPlace"]["data"][0]["sourceName"];
                 GameCard.querySelector(".RobloxGameDescription").querySelector("#Message").textContent = Information["RootPlace"]["data"][0]["sourceDescription"];
                 GameCard.style.display = "";
+                GameCard.addEventListener('click', function() {
+                    const newUrl = `${window.location.origin}/index.html?gameID=${Information["RootPlace"]["data"][0]["rootPlaceId"]}`;
+                    console.log('Redirecting to:', newUrl);
+                    window.location.href = newUrl;
+                });
                 document.getElementById("MainContentContainer").appendChild(GameCard);
             });
         }
