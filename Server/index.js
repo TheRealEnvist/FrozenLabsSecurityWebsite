@@ -11,6 +11,12 @@ const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-serv
     timeout: 5000,                 // Connection timeout (5 seconds)
 });
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 
 // Listen for successful connection
 serverchat.on('connect', () => {
