@@ -68,6 +68,7 @@ async function onLoad() {
         if(verifing["verified"]){
             document.cookie = "token="+verifing["token"]+"; Path=/; Secure; SameSite=true"
             document.cookie = "information="+JSON.stringify(verifing["token-resources"])+"; Path=/; Secure; SameSite=true"
+            document.cookie = "webtoken="+verifing["token"]+"; Path=/; Secure; SameSite=true"
             const newUrl = `${window.location.origin}/games`;
             console.log('Redirecting to:', newUrl);
             window.location.href = newUrl;
