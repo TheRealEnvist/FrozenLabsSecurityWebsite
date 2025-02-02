@@ -3,7 +3,13 @@ const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 var serverID = params.get("serverID")
 var gameID = params.get("gameID")
-const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/`+getCookie("webtoken")+"/false", {
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/${getCookie("webtoken")}/false`, {
     reconnection: true,             // Enable automatic reconnection
     reconnectionAttempts: Infinity, // Keep trying indefinitely
     reconnectionDelay: 1000,        // Start with a 1-second delay
@@ -11,11 +17,7 @@ const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-serv
     timeout: 5000,                 // Connection timeout (5 seconds)
 });
 
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
+
 
 
 // Listen for successful connection
