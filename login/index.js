@@ -76,6 +76,9 @@ async function onLoad() {
         }else{
             document.getElementById("serverError").hidden = false;
             document.getElementById("serverError").querySelector('#ErrorMessage').textContent = "Invaild code";
+            if(verifing["error"]){
+                document.getElementById("serverError").querySelector('#ErrorMessage').textContent = verifing["error"];
+            }
         }
     }else{
         window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri=https%3A%2F%2Fsecurity.envistmakes.com%2Flogin&scope=openid+profile+asset%3Aread+group%3Aread+universe:write&step=accountConfirm";
