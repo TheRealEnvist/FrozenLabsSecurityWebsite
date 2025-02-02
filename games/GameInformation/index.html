@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <script src="index.js"></script>
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerDisplay" id="playerDisplayRefrence" hidden="true">
+        <button class="serverDisplay" id="serverDisplayReference" hidden="true" onclick="onServerClick(this)">
+            <h1 id="serverID">[serverID]</h1>
+            <div class="serverDisplayLiner"></div>
+            <div class="playerContainer" id="playerContainer">
+                <div class="dot-bricks" id="playerLoadingIcon"></div>
+            </div>
+        </button>
+        <div class="RobloxGameContainer" id="RobloxGameContainer" style="display: none;">
+            <div class="RobloxGameImage" id="RobloxGameImage"></div>
+            <div class="RobloxGameImageOutline"></div>
+            <div class="RobloxGameTitle">
+                <h1 class="RobloxGameMessageTitle" id="Message">
+                    [Name]
+                </h1>
+            </div>
+            <div class="RobloxGameDescription">
+                <h1 class="RobloxGameMessage" id="Message">
+                    [Disc]
+                </h1>
+            </div>
+        </div>
+    </head>
+    <body onload="onLoad()">
+        
+        <div class="BubbleContainer">
+            <img src="/Assets/icon.png" class="IconDisplay">
+            <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
+        </div>
+        <button class="BubbleContainerButton">
+            <h1>Servers</h1>
+        </button>
+        
+        <div class="MainContentContainer" id="MainContentContainer">
+            
+            <div class="BubbleContainer" style="background-color: rgb(2, 21, 38); align-self: flex-start;">
+                Game Connect Key: 
+                <div class="BubbleContainer" >
+                    <h1 style="filter: blur(10px);" id="ConnectKey"> fdsghjfdsghjashkjhwjujH!&*h872y9h8GA*72iu1jpasUIkjsda98hoai32</h1>
+                    
+                </div>
+
+                <div class="BubbleContainer"> 
+                    Show
+                </div> 
+
+            </div> 
+        </div>
+            
+                
+        </div>
+    </body>
+    
+</html>

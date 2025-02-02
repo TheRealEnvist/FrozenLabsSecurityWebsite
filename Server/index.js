@@ -3,7 +3,7 @@ const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 var serverID = params.get("serverID")
 var gameID = params.get("gameID")
-const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server`, {
+const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/`+getCookie("webtoken")+"/false", {
     reconnection: true,             // Enable automatic reconnection
     reconnectionAttempts: Infinity, // Keep trying indefinitely
     reconnectionDelay: 1000,        // Start with a 1-second delay
@@ -136,7 +136,7 @@ async function postRequest(url, payload) {
 }
 
 async function loadPlayers(gameID, serverID){
-    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots");
+    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots/"+getCookie("webtoken")+"/false");
     const list = headshots.headshots
     const PlayerDisplayContainer = document.getElementById("playerListDisplatReference").cloneNode(true);
     const ServerPlayerList = document.getElementById("PlayerContentContainer");
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = chatBox.value
         Template.hidden = "false"
         Template.style.display = "flex";
-        postRequest(apiService+"games/" + gameID+"/server/" +serverID+"/server-chat", {
+        postRequest(apiService+"games/" + gameID+"/server/" +serverID+"/server-chat/"+getCookie("webtoken")+"/false", {
             add: true,
             message: chatBox.value
         })

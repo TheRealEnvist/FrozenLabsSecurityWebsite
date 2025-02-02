@@ -2,6 +2,12 @@ const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 async function getRequest(url, nocors) {
     try {
         var response;
@@ -52,7 +58,7 @@ async function postRequest(url, payload) {
 }
 
 async function loadPlayers(element, gameID, serverID){
-    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots");
+    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots/"+getCookie("webtoken")+"/false");
     const list = headshots.headshots
     const serverDisplay =  document.getElementById("playerDisplayRefrence")
     element.querySelector("#playerContainer").querySelector("#playerLoadingIcon").hidden = true
