@@ -9,13 +9,20 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-const serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/${getCookie("webtoken")}/false`, {
-    reconnection: true,             // Enable automatic reconnection
-    reconnectionAttempts: Infinity, // Keep trying indefinitely
-    reconnectionDelay: 1000,        // Start with a 1-second delay
-    reconnectionDelayMax: 1000,     // Maximum delay of 1 seconds
-    timeout: 5000,                 // Connection timeout (5 seconds)
-});
+var serverchat;
+
+async function connect() {
+
+    const connectionkey = (await getRequest(apiService+`games/${gameID}/ConnectionKey/${getCookie("webtoken")}/`))["key"]
+
+    serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/${connectionkey}/false`, {
+        reconnection: true,             // Enable automatic reconnection
+        reconnectionAttempts: Infinity, // Keep trying indefinitely
+        reconnectionDelay: 1000,        // Start with a 1-second delay
+        reconnectionDelayMax: 1000,     // Maximum delay of 1 seconds
+        timeout: 5000,                 // Connection timeout (5 seconds)
+    });
+}
 
 
 
