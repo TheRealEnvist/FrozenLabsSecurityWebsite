@@ -1,13 +1,14 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
-const SelectedGame = getCookie("SelectedGame")
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
+
+var SelectedGame = getCookie("SelectedGame")
 
 async function getRequest(url, nocors) {
     try {
@@ -105,6 +106,7 @@ function loginButton(){
 }
 
 async function onLoad(){
+    SelectedGame = getCookie("SelectedGame")
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("NotLoggedIn").hidden = true;
 
@@ -134,7 +136,7 @@ async function onLoad(){
     }
     var serverrespond = await getRequest(apiService+"status");   
     if(serverrespond.status){
-        serverrespond = await getRequest(apiService+"games/" + params.get("gameID")+"/servers");
+        serverrespond = await getRequest(apiService+"games/" + SelectedGame+"/servers");
         document.getElementById("loadingIcon").hidden = true;
         document.getElementById("loadingIcon").style.display = "none";
         console.log(serverrespond);
