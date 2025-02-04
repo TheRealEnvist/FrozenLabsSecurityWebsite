@@ -108,26 +108,25 @@ async function onLoad(){
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("NotLoggedIn").hidden = true;
 
-    if(!getCookie("webtoken") && getCookie("webtoken") == null){
-        document.getElementById("loginButton").style.display = "flex";
-        document.getElementById("NotLoggedIn").hidden = false;
-        
-    }else{
-        var status = await getRequest(apiService+"profile/validateWebToken/"+getCookie("webtoken")+"/");
-        if(status){
-            if(validation in status){
-                if(!status[validation]){
-                    document.getElementById("loginButton").style.display = "flex";
-                    document.getElementById("NotLoggedIn").hidden = false;
-                }
-            }else{
+
+    if(getCookie("webtoken") == null){
+        document.cookie = "webtoken=a;"
+    }
+
+    var status = await getRequest(apiService+"profile/validateWebToken/"+getCookie("webtoken")+"/");
+    if(status){
+        if(validation in status){
+            if(!status[validation]){
                 document.getElementById("loginButton").style.display = "flex";
                 document.getElementById("NotLoggedIn").hidden = false;
             }
-        }else{
+         }else{
             document.getElementById("loginButton").style.display = "flex";
             document.getElementById("NotLoggedIn").hidden = false;
         }
+    }else{
+        document.getElementById("loginButton").style.display = "flex";
+        document.getElementById("NotLoggedIn").hidden = false;
     }
 
     if(params.get("ip")!=null){
