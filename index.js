@@ -108,9 +108,10 @@ async function onLoad(){
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("NotLoggedIn").hidden = true;
 
-    if(getCookie("webtoken") && getCookie("webtoken") != ""){
+    if(!getCookie("webtoken") && getCookie("webtoken") == null){
         document.getElementById("loginButton").style.display = "flex";
         document.getElementById("NotLoggedIn").hidden = false;
+        
     }else{
         var status = await getRequest(apiService+"profile/validateWebToken/"+getCookie("webtoken")+"/");
         if(status){
