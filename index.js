@@ -114,7 +114,7 @@ async function onLoad(){
     }else{
         var status = await getRequest(apiService+"profile/validateWebToken/"+getCookie("webtoken")+"/");
         if(status){
-            if("validation" in status){
+            if(validation in status){
                 if(!status[validation]){
                     document.getElementById("loginButton").style.display = "flex";
                     document.getElementById("NotLoggedIn").hidden = false;
