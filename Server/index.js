@@ -2,7 +2,7 @@ const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 var serverID = getCookie("SelectedServer")
-var gameID = params.get("SelectedGame")
+var gameID = getCookie("SelectedGame")
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -87,8 +87,8 @@ async function connect() {
     // Optional: Provide feedback to the user about connection state
     serverchat.on('connect_error', (error) => {
         console.error('Connection error:', error);
-        serverID = params.get("serverID")
-        gameID = params.get("gameID")
+        serverID = getCookie("SelectedServer")
+        gameID = getCookie("SelectedGame")
         const ChatContentContainer = document.getElementById("ChatContentContainer");
         const errorElement = document.createElement("div");
         errorElement.textContent = "Connection error. Retrying... (The server may not be registered)";
