@@ -150,7 +150,7 @@ async function onLoad(){
             serverClone.hidden = false
             serverClone.querySelector('#serverID').textContent = data["id"];
             document.getElementById("severDisplayList").appendChild(serverClone)
-            loadPlayers(serverClone, params.get("gameID"),data["id"]);
+            loadPlayers(serverClone, gameID,data["id"]);
         });
     }else{
         document.getElementById("serverError").hidden = false;
