@@ -60,7 +60,6 @@ async function postRequest(url, payload) {
 
 
 async function onLoad() {
-    console.log("Version 1")
     if(params.get("code") != null){
         console.log(apiService+ "profile/"+params.get("code")+"/register");
         const verifing = await getRequest(apiService+ "profile/"+params.get("code")+"/register")
@@ -81,7 +80,7 @@ async function onLoad() {
             }
         }
     }else{
-        window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri=https%3A%2F%2Fsecurity.envistmakes.com%2Flogin&scope=openid+profile+asset%3Aread+group%3Aread+universe:write&step=accountConfirm";
+        window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri=https%3A%2F%2Fsecurity.envistmakes.com%2Flogin&scope=openid+profile+asset%3Aread+group%3Aread+universe.user-restriction:read&step=accountConfirm";
     }
 
 }

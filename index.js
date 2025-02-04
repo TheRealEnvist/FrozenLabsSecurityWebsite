@@ -95,7 +95,39 @@ function onServerClick(element){
     window.location.href = newUrl;
 }
 
+function loginButton(){
+    const newUrl = `${window.location.origin}/login`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
 async function onLoad(){
+    document.getElementById("loginButton").style.display = "none";
+    document.getElementById("NotLoggedIn").hidden = true;
+
+    if(getCookie("webtoken") && getCookie("webtoken") != ""){
+        document.getElementById("loginButton").style.display = "flex";
+        document.getElementById("NotLoggedIn").hidden = false;
+    }else{
+        var status = await getRequest(apiService+"profile/validateWebToken/"+getCookie("webtoken")+"/");
+        if(status){
+            if("validation" in status){
+                if(!status[validation]){
+                    document.getElementById("loginButton").style.display = "flex";
+                    document.getElementById("NotLoggedIn").hidden = false;
+                }
+            }else{
+                document.getElementById("loginButton").style.display = "flex";
+                document.getElementById("NotLoggedIn").hidden = false;
+            }
+        }else{
+            document.getElementById("loginButton").style.display = "flex";
+            document.getElementById("NotLoggedIn").hidden = false;
+        }
+    }
+
     if(params.get("ip")!=null){
         apiService = params.get("ip")
     }
