@@ -76,7 +76,8 @@ async function generateGameProfiles() {
                 GameCard.querySelector(".RobloxGameDescription").querySelector("#Message").textContent = Information["RootPlace"]["data"][0]["sourceDescription"];
                 GameCard.style.display = "";
                 GameCard.addEventListener('click', function() {
-                    const newUrl = `${window.location.origin}/index.html?gameID=${Information["RootPlace"]["data"][0]["rootPlaceId"]}`;
+                    document.cookie = "SelectedGame="+Information["RootPlace"]["data"][0]["rootPlaceId"]+"; Path=/; Secure; SameSite=true"
+                    const newUrl = `${window.location.origin}/index.html`;
                     console.log('Redirecting to:', newUrl);
                     window.location.href = newUrl;
                 });

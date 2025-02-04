@@ -1,6 +1,7 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
+const SelectedGame = getCookie("SelectedGame")
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -80,7 +81,7 @@ function onServerClick(element){
     const serverID = serverIDElement.textContent.trim(); // Trim to avoid extra spaces
     console.log('Server ID:', serverID);
 
-    const gameID = params.get('gameID');
+    const gameID = SelectedGame;
     if (!gameID) {
         console.error('Game ID not found in URL.');
         return;
