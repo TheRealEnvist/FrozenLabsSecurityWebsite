@@ -1,8 +1,8 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
-var serverID = params.get("serverID")
-var gameID = params.get("gameID")
+var serverID = getCookie("SelectedServer")
+var gameID = params.get("SelectedGame")
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

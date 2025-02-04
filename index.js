@@ -89,8 +89,10 @@ function onServerClick(element){
     }
     console.log('Game ID:', gameID);
 
+    document.cookie = "SelectedServer="+serverID+"; Path=/; Secure; SameSite=true"
+
     // Construct new URL
-    const newUrl = `${window.location.origin}/Server/index.html?gameID=${encodeURIComponent(gameID)}&serverID=${encodeURIComponent(serverID)}`;
+    const newUrl = `${window.location.origin}/Server/index.html`;
     console.log('Redirecting to:', newUrl);
 
     // Redirect
