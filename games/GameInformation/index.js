@@ -1,6 +1,10 @@
 const url = window.location.href;
 const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
+var gameID = getCookie("SelectedGame")
+var ConnectKey = null;
+var HiddenKey = "10238021843095743995rn894375329847329874239874x92by948327b984328749327412";
+var Shown = false;
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -57,7 +61,36 @@ async function postRequest(url, payload) {
     }
 }
 
+function gamesButton(){
+    const newUrl = `${window.location.origin}/games/`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
+function serversButton(){
+    const newUrl = `${window.location.origin}/`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
+function ToggleKeyVisibility(element){
+    if(Shown){
+        element.textContent = "Show"
+        document.getElementById("ConnectKey").style.filter = "blur(10px)";
+        document.getElementById("ConnectKey").textContent = HiddenKey;
+    }else{
+        element.textContent = "Hide"
+        document.getElementById("ConnectKey").style.filter = "";
+        document.getElementById("ConnectKey").textContent = ConnectKey;
+    }
+    Shown = !Shown;
+}
+
 
 async function onLoad(){
-
+    ConnectKey = (await getRequest(apiService+`games/${gameID}/ConnectionKey/${getCookie("webtoken")}`))["key"]
 }

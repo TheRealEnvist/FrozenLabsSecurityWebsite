@@ -224,6 +224,22 @@ chatBox.addEventListener("input", function () {
 
   });
 
+  function gameInfoButton(){
+    const newUrl = `${window.location.origin}/games/GameInformation`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
+function serversButton(){
+    const newUrl = `${window.location.origin}/`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
 async function onLoad(){
     document.getElementById('playerListDisplatReference').style.display = 'none';
     document.getElementById('MessageTemplate').style.display = 'none';

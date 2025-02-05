@@ -21,10 +21,10 @@
             <img src="Assets/icon.png" class="IconDisplay">
             <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
         </div>
-        <button class="BubbleContainerButton">
-            <h1>Servers</h1>
+        <button class="BubbleContainerButton" onclick="gamesButton()">
+            <h1>Games</h1>
         </button>
-        <button class="BubbleContainerButton">
+        <button class="BubbleContainerButton" onclick="gameInfoButton()">
             <h1>Game Information</h1>
         </button>
 
@@ -46,7 +46,7 @@
             <h1 id="NotLoggedIn">
                 Hello User! You need to be logged in to view this page! 
                 <br>
-                Please head over to <a href="https://security.envistmakes.com/login" style="color: white;">https://security.envistmakes.com/login</a>
+                Please head over to <a style="color: white;" onclick="loginButton()">https://security.envistmakes.com/login</a>
             </h1>
         </div>
     </body>

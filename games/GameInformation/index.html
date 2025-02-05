@@ -5,7 +5,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-        <script src="index.js"></script>
+        <script src="/games/GameInformation/index.js"></script>
         <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerDisplay" id="playerDisplayRefrence" hidden="true">
         <button class="serverDisplay" id="serverDisplayReference" hidden="true" onclick="onServerClick(this)">
             <h1 id="serverID">[serverID]</h1>
@@ -35,7 +35,10 @@
             <img src="/Assets/icon.png" class="IconDisplay">
             <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
         </div>
-        <button class="BubbleContainerButton">
+        <button class="BubbleContainerButton" onclick="gamesButton()">
+            <h1>Games</h1>
+        </button>
+        <button class="BubbleContainerButton" onclick="serversButton()">
             <h1>Servers</h1>
         </button>
         
@@ -44,13 +47,15 @@
             <div class="BubbleContainer" style="background-color: rgb(2, 21, 38); align-self: flex-start;">
                 Game Connect Key: 
                 <div class="BubbleContainer" >
-                    <h1 style="filter: blur(10px);" id="ConnectKey"> fdsghjfdsghjashkjhwjujH!&*h872y9h8GA*72iu1jpasUIkjsda98hoai32</h1>
+                    <h1 style="filter: blur(10px); transition: 0.5s;" id="ConnectKey"> 
+                        10238021843095743995rn894375329847329874239874x92by948327b984328749327412
+                    </h1>
                     
                 </div>
 
-                <div class="BubbleContainer"> 
+                <button class="BubbleContainerButton" onclick="ToggleKeyVisibility(this)"> 
                     Show
-                </div> 
+                </button> 
 
             </div> 
         </div>

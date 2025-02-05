@@ -107,11 +107,26 @@ function loginButton(){
     window.location.href = newUrl;
 }
 
+function gameInfoButton(){
+    const newUrl = `${window.location.origin}/games/GameInformation`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
+function gamesButton(){
+    const newUrl = `${window.location.origin}/games/`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
 async function onLoad(){
     SelectedGame = getCookie("SelectedGame")
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("NotLoggedIn").hidden = true;
-
 
     if(getCookie("webtoken") == null){
         document.cookie = "webtoken=a;"
