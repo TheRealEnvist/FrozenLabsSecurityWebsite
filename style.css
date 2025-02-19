@@ -127,12 +127,11 @@ h1 {
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
-  width: auto;
-  height: auto;
   align-self: flex-start;
   position: relative;
   border-radius: 15px;
   background-color: rgb(2, 21, 38);
+  transition: all 0.3s ease;
 }
 
 .ServerMainContentContainer {
@@ -309,7 +308,15 @@ h1 {
   align-self:flex-start;
   font-size: 16px; 
   margin-top: 5px;
-  transition: transform 0.3s ease; 
+  transition: all 0.3s ease;
+}
+
+.playerServerDisplayContainer:hover{
+  box-shadow: 0px 0px 10px rgb(255, 255, 255); 
+}
+.playerServerDisplayContainer:active{
+  box-shadow: 0px 0px 5px rgb(255, 255, 255);
+  transform: scale(0.95);
 }
 
 .playerServerUserDisplayText{

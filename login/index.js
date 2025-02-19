@@ -60,6 +60,9 @@ async function postRequest(url, payload) {
 
 
 async function onLoad() {
+    if(params.get("code") == null){
+        window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri="+window.location.origin+"/login"+"&scope=openid+profile+asset%3Aread+group%3Aread+universe.user-restriction:read&step=accountConfirm";
+    }
     if(params.get("code") != null){
         console.log(apiService+ "profile/"+params.get("code")+"/register");
         const verifing = await getRequest(apiService+ "profile/"+params.get("code")+"/register")
@@ -79,8 +82,6 @@ async function onLoad() {
                 document.getElementById("serverError").querySelector('#ErrorMessage').textContent = verifing["error"];
             }
         }
-    }else{
-        window.location.href = "https://authorize.roblox.com/?client_id=1027663679860863056&response_type=code&redirect_uri="+window.location.origin+"/login"+"&scope=openid+profile+asset%3Aread+group%3Aread+universe.user-restriction:read&step=accountConfirm";
     }
 
 }

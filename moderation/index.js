@@ -10,21 +10,12 @@ function getCookie(name) {
 }
 
 var serverchat;
-var servercommunication;
 
 async function connect() {
 
     const connectionkey = (await getRequest(apiService+`games/${gameID}/ConnectionKey/${getCookie("webtoken")}/`))["key"]
 
     serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/${connectionkey}/false`, {
-        reconnection: true,             // Enable automatic reconnection
-        reconnectionAttempts: Infinity, // Keep trying indefinitely
-        reconnectionDelay: 1000,        // Start with a 1-second delay
-        reconnectionDelayMax: 1000,     // Maximum delay of 1 seconds
-        timeout: 5000,                 // Connection timeout (5 seconds)
-    });
-
-    servercommunication = io(`${apiService}games/${gameID}/server/${serverID}/server-communication/${connectionkey}`, {
         reconnection: true,             // Enable automatic reconnection
         reconnectionAttempts: Infinity, // Keep trying indefinitely
         reconnectionDelay: 1000,        // Start with a 1-second delay
@@ -42,10 +33,6 @@ async function connect() {
         connectedElement.style.color = "lightgreen";
         ChatContentContainer.insertBefore(connectedElement, ChatContentContainer.firstChild);
         
-    });
-
-    servercommunication.on('updateList', () => {
-        loadPlayers(gameID, serverID)
     });
     
     // Handle reconnection attempts
@@ -105,17 +92,6 @@ async function connect() {
         const ChatContentContainer = document.getElementById("ChatContentContainer");
         const errorElement = document.createElement("div");
         errorElement.textContent = "Connection error. Retrying... (The server may not be registered)";
-        errorElement.style.color = "red";
-        ChatContentContainer.insertBefore(errorElement, ChatContentContainer.firstChild);
-    });
-
-    servercommunication.on('connect_error', (error) => {
-        console.error('Connection error:', error);
-        serverID = getCookie("SelectedServer")
-        gameID = getCookie("SelectedGame")
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        const errorElement = document.createElement("div");
-        errorElement.textContent = "Couldnt connect fully to the server player list may not update as expected.";
         errorElement.style.color = "red";
         ChatContentContainer.insertBefore(errorElement, ChatContentContainer.firstChild);
     });
@@ -183,18 +159,14 @@ async function loadPlayers(gameID, serverID){
     const ServerPlayerList = document.getElementById("PlayerContentContainer");
     document.getElementById("loadingIcon").hidden = true;
     document.getElementById("loadingIcon").style.display = "none";
-    ServerPlayerList.replaceChildren();
     list.forEach((data, index, array) => {
-        if(document.getElementById("nameplate_" + data["PlayerInformation"]["Username"]) == null){
-            const PlayerDisplay = PlayerDisplayContainer.cloneNode(true);
-            PlayerDisplay.style.display = ''
-            PlayerDisplay.hidden = false;
-            PlayerDisplay.id = "nameplate_" + data["PlayerInformation"]["Username"];
-            PlayerDisplay.querySelector("#playerDisplayRefrence").src = data["imageUrl"]
-            PlayerDisplay.querySelector("#playerServerDisplayText").textContent = data["PlayerInformation"]["Display"]
-            PlayerDisplay.querySelector("#playerServerUserDisplayText").textContent = "@" + data["PlayerInformation"]["Username"]
-            ServerPlayerList.appendChild(PlayerDisplay);
-        }
+        const PlayerDisplay = PlayerDisplayContainer.cloneNode(true);
+        PlayerDisplay.style.display = ''
+        PlayerDisplay.hidden = false;
+        PlayerDisplay.querySelector("#playerDisplayRefrence").src = data["imageUrl"]
+        PlayerDisplay.querySelector("#playerServerDisplayText").textContent = data["PlayerInformation"]["Display"]
+        PlayerDisplay.querySelector("#playerServerUserDisplayText").textContent = "@" + data["PlayerInformation"]["Username"]
+        ServerPlayerList.appendChild(PlayerDisplay);
     });
 }
 
@@ -258,11 +230,6 @@ chatBox.addEventListener("input", function () {
 
     // Redirect
     window.location.href = newUrl;
-}
-
-function moderateUser(element){
-    var username = element.querySelector("#playerServerUserDisplayText").textContent.split('@').join('');
-    document.cookie = "SelectedUser="+username+"; Path=/; Secure; SameSite=true"
 }
 
 function serversButton(){
