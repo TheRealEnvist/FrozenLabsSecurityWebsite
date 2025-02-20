@@ -3,19 +3,29 @@ const params = new URLSearchParams(new URL(url).search);
 var apiService = "https://api.envistmakes.com/"
 var serverID = getCookie("SelectedServer")
 var gameID = getCookie("SelectedGame")
+var TargetedPlayer = getCookie("SelectedUser")
+var TargetedPlayerDisplay = getCookie("SelectedUserDisplay")
+var TargetedPlayerMugshot = getCookie("SelectedUserMugshot")
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-var serverchat;
+var actionsCompletion;
+
+var AwaitingActionCompletion;
+var AwaitingActionCompletionAction;
+
+var ConnectionID;
 
 async function connect() {
 
     const connectionkey = (await getRequest(apiService+`games/${gameID}/ConnectionKey/${getCookie("webtoken")}/`))["key"]
 
-    serverchat = io(`${apiService}games/${gameID}/server/${serverID}/chat-server/${connectionkey}/false`, {
+    ConnectionID = connectionkey
+
+    actionsCompletion = io(`${apiService}games/${gameID}/server/${serverID}/actions/${connectionkey}`, {
         reconnection: true,             // Enable automatic reconnection
         reconnectionAttempts: Infinity, // Keep trying indefinitely
         reconnectionDelay: 1000,        // Start with a 1-second delay
@@ -23,75 +33,21 @@ async function connect() {
         timeout: 5000,                 // Connection timeout (5 seconds)
     });
 
-    serverchat.on('connect', () => {
-        console.log('Connected to the chat server.');
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
-        ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
-        const connectedElement = document.createElement("div");
-        connectedElement.textContent = "Connected!";
-        connectedElement.style.color = "lightgreen";
-        ChatContentContainer.insertBefore(connectedElement, ChatContentContainer.firstChild);
-        
-    });
-    
-    // Handle reconnection attempts
-    serverchat.on('reconnect_attempt', (attemptNumber) => {
-        console.log(`Reconnection attempt #${attemptNumber}`);
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        ChatContentContainer.querySelector("#loadingIcon").style.display = "flex";
-        ChatContentContainer.querySelector("#loadingIcon").hidden = "false";
-        
-    });
-    
-    // Handle successful reconnection
-    serverchat.on('reconnect', (attemptNumber) => {
-        console.log(`Reconnected after ${attemptNumber} attempts.`);
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
-        ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
-        
-    });
-    
-    // Handle reconnection errors
-    serverchat.on('reconnect_error', (error) => {
-        console.error('Reconnection failed:', error);
-    });
-    
-    // Handle permanent disconnection
-    serverchat.on('disconnect', (reason) => {
-        console.warn(`Disconnected: ${reason}`);
-        if (reason === 'io server disconnect') {
-            // If the server manually disconnected the client, try reconnecting
-            serverchat.connect();
+    actionsCompletion.on('actionCompleted', (message) => {
+        console.log("Action completed recevied")
+        console.log(message);
+        if(message["actionID"] == AwaitingActionCompletion){
+            ActionButtonCancel(AwaitingActionCompletionAction)
         }
     });
-    
-    // Handle incoming chat messages
-    serverchat.on('chat-message', (message) => {
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
-        ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
-        
-        const Template = document.getElementById("MessageTemplate").cloneNode(true);
-        ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild);
-        
-        Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent =
-            `${message["display"]} @${message["username"]}`;
-        Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent =
-            message["message"];
-        Template.hidden = "false";
-        Template.style.display = "flex";
-    });
-    
-    // Optional: Provide feedback to the user about connection state
-    serverchat.on('connect_error', (error) => {
+
+    actionsCompletion.on('connect_error', (error) => {
         console.error('Connection error:', error);
         serverID = getCookie("SelectedServer")
         gameID = getCookie("SelectedGame")
         const ChatContentContainer = document.getElementById("ChatContentContainer");
         const errorElement = document.createElement("div");
-        errorElement.textContent = "Connection error. Retrying... (The server may not be registered)";
+        errorElement.textContent = "Couldnt connect fully to the server player list may not update as expected.";
         errorElement.style.color = "red";
         ChatContentContainer.insertBefore(errorElement, ChatContentContainer.firstChild);
     });
@@ -152,77 +108,40 @@ async function postRequest(url, payload) {
     }
 }
 
-async function loadPlayers(gameID, serverID){
-    var headshots = await getRequest(apiService+"games/" + gameID+"/server/" +serverID+"/playerHeadshots/"+getCookie("webtoken")+"/false");
-    const list = headshots.headshots
-    const PlayerDisplayContainer = document.getElementById("playerListDisplatReference").cloneNode(true);
-    const ServerPlayerList = document.getElementById("PlayerContentContainer");
-    document.getElementById("loadingIcon").hidden = true;
-    document.getElementById("loadingIcon").style.display = "none";
-    list.forEach((data, index, array) => {
-        const PlayerDisplay = PlayerDisplayContainer.cloneNode(true);
-        PlayerDisplay.style.display = ''
-        PlayerDisplay.hidden = false;
-        PlayerDisplay.querySelector("#playerDisplayRefrence").src = data["imageUrl"]
-        PlayerDisplay.querySelector("#playerServerDisplayText").textContent = data["PlayerInformation"]["Display"]
-        PlayerDisplay.querySelector("#playerServerUserDisplayText").textContent = "@" + data["PlayerInformation"]["Username"]
-        ServerPlayerList.appendChild(PlayerDisplay);
-    });
+async function ActionButton(action) {
+    if(action=="Kick"){
+        document.getElementById('KickWindow').style.display = null;
+        document.getElementById('ModerationOverlay').hidden = null;
+        var KickButtion = document.getElementById('KickWindow').querySelector(".ListContentContainerSidewaysCentered").querySelector("#KickButton")
+        KickButtion.querySelector("#loadingIcon").style.display = "none";
+        KickButtion.querySelector("#ButtonText").hidden = null;
+    }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const chatBox = document.querySelector(".RobloxChatMessage");
-    const originalHeight = "20px"; // Store the original height for resetting
-
-    chatBox.addEventListener("keydown", function (event) {
-      // Check if the user presses "Enter" without "Shift"
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault(); // Prevent default action (adding a new line)
-
-        // Simulate sending the message (e.g., log to console)
-        console.log("Message sent:", chatBox.value);
-        const ChatContentContainer = document.getElementById("ChatContentContainer");
-        ChatContentContainer.querySelector("#loadingIcon").style.display = "none";
-        ChatContentContainer.querySelector("#loadingIcon").hidden = "true";
-        const Template = document.getElementById("MessageTemplate").cloneNode(true);
-        ChatContentContainer.insertBefore(Template, ChatContentContainer.firstChild)
-        Template.querySelector(".BubbleContainerDark").querySelector(".UserName").textContent = "Server"
-        Template.querySelector("#MessageContent").querySelector(".MessageContent").textContent = chatBox.value
-        Template.hidden = "false"
-        Template.style.display = "flex";
-        postRequest(apiService+"games/" + gameID+"/server/" +serverID+"/server-chat/"+getCookie("webtoken")+"/false", {
-            add: true,
-            message: chatBox.value
+async function ActionButtonConfirm(action, element) {
+    if(action=="Kick"){
+        var KickReason = document.getElementById('KickWindow').querySelector('#Reason').value
+        var RecordedReason = document.getElementById('KickWindow').querySelector('#RecordedReason').value
+        element.querySelector("#loadingIcon").style.display = null;
+        element.querySelector("#ButtonText").hidden = true;
+        AwaitingActionCompletionAction = action;
+        var actionAdd = await postRequest(apiService+`games/${gameID}/server/${serverID}/action/${ConnectionID}/true`,{
+            player: TargetedPlayer, 
+            reason: KickReason, 
+            recordedReason: RecordedReason, 
+            action: action
         })
+        AwaitingActionCompletion = actionAdd["actionID"];
+        console.log(actionAdd);
+    }
+}
 
-        // Reset textarea content and height
-        chatBox.value = "";
-        chatBox.style.height = originalHeight;
-
-        // Optionally unfocus the textarea
-        chatBox.blur();
-      }
-    });
-
-    let isAdjusting = false;
-
-chatBox.addEventListener("input", function () {
-  if (!isAdjusting) {
-    isAdjusting = true;
-
-    requestAnimationFrame(function adjustHeight() {
-      chatBox.style.height = chatBox.scrollHeight - 10 + "px";
-
-      if (chatBox.scrollHeight !== parseInt(chatBox.style.height)) {
-        requestAnimationFrame(adjustHeight);
-      } else {
-        isAdjusting = false;
-      }
-    });
-  }
-});
-
-  });
+async function ActionButtonCancel(action) {
+    if(action=="Kick"){
+        document.getElementById('KickWindow').style.display = "none";
+        document.getElementById('ModerationOverlay').hidden = true;
+    }
+}
 
   function gameInfoButton(){
     const newUrl = `${window.location.origin}/games/GameInformation`;
@@ -241,7 +160,9 @@ function serversButton(){
 }
 
 async function onLoad(){
-    document.getElementById('playerListDisplatReference').style.display = 'none';
     document.getElementById('MessageTemplate').style.display = 'none';
-    loadPlayers(gameID, serverID)
+    var UserPlate = document.getElementById("playerListDisplatReference")
+    UserPlate.querySelector("#playerServerUserDisplayText").textContent = "@"+TargetedPlayer
+    UserPlate.querySelector("#playerServerDisplayText").textContent = TargetedPlayerDisplay
+    UserPlate.querySelector("#playerDisplayRefrence").src = TargetedPlayerMugshot
 }

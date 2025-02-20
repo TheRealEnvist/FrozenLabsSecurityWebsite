@@ -262,7 +262,14 @@ chatBox.addEventListener("input", function () {
 
 function moderateUser(element){
     var username = element.querySelector("#playerServerUserDisplayText").textContent.split('@').join('');
+    var display = element.querySelector("#playerServerDisplayText").textContent
+    var mugshot = element.querySelector("#playerDisplayRefrence").src
     document.cookie = "SelectedUser="+username+"; Path=/; Secure; SameSite=true"
+    document.cookie = "SelectedUserDisplay="+display+"; Path=/; Secure; SameSite=true"
+    document.cookie = "SelectedUserMugshot="+mugshot+"; Path=/; Secure; SameSite=true"
+    const newUrl = `${window.location.origin}/moderation/index.html`;
+                    console.log('Redirecting to:', newUrl);
+                    window.location.href = newUrl;
 }
 
 function serversButton(){

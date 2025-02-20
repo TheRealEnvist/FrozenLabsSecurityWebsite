@@ -22,6 +22,100 @@ h1 {
   height: 100%;
 }
 
+.ReasonMessage {
+  width: 200px;
+  height: 80px; /* Initial height */
+  position: relative;
+  justify-self: baseline;
+  margin-top: 10px;
+  background-color: rgb(2, 21, 38);
+  border-radius: 15px;
+  outline-style: none;
+  border: 0px solid rgb(80, 130, 180);
+  color: rgb(226, 226, 182);
+  text-align: left;
+  padding: 5px 10px;
+  resize: none; /* Disable manual resizing */
+  overflow: hidden; /* Prevent scrollbars */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+
+
+.ReasonMessage:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(80, 130, 180, 0.5);
+}
+
+.BubbleContainerCentered {
+  color: rgb(226, 226, 182);
+  background-color: rgb(3, 52, 110);
+  padding: 10px 20px; /* Add padding to account for the icon */
+  margin-left: 10px;
+  border-radius: 15px;
+  display:inline-flex;      /* Use flexbox for text and line alignment */
+  align-items: center;
+  position: fixed; /* Required for absolutely positioned child */
+  top: 50%;        /* Position element 50% from the top */
+  left: 50%;       /* Position element 50% from the left */
+  transform: translate(-50%, -50%); /* Adjust position by half of its width and height */
+  z-index: 0;
+}
+
+.ModerationOverlay {
+  position:fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0); /* Optional: for a semi-transparent overlay */
+  backdrop-filter: blur(5px);  /* Apply blur effect to the background */
+  z-index: 1;
+  transition: all 0.25s ease;
+}
+
+.ListContentContainerSidewaysCentered {
+  display: flex;
+  justify-content: flex-start;
+
+  align-items: center;
+  align-self:center;
+  position: relative;
+}
+
+.ListContentContainerSideways {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-self:baseline;
+  position: relative;
+}
+
+.ListContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  align-self:baseline;
+  position: relative;
+}
+
+.LogsContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  margin-top: 5px;
+  width: 1250px;
+  height: 400px;
+  align-self:baseline;
+  position: relative;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+  transition: all 0.3s ease;
+}
 
 .RobloxGameContainer{
   background-color: rgb(2, 21, 38);
@@ -124,6 +218,18 @@ h1 {
 .PlayerContentContainer {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  align-self: flex-start;
+  position: relative;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
+  transition: all 0.3s ease;
+}
+
+.PlayerContentContainerSideways {
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
@@ -302,13 +408,14 @@ h1 {
   padding-right: 10px;
   background-color: rgb(3, 52, 110);
   border-radius: 8px; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 2px 5px rgba(0, 0, 0); 
   text-align: left; 
   font-family: Arial, sans-serif; 
   align-self:flex-start;
   font-size: 16px; 
   margin-top: 5px;
   transition: all 0.3s ease;
+  
 }
 
 .playerServerDisplayContainer:hover{

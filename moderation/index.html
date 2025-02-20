@@ -7,13 +7,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
         <script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>
-        <script src="/Server/index.js"></script>
+        <script src="/moderation/index.js"></script>
         <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerDisplay" id="playerDisplayRefrence" hidden="true">
-        <div class="playerServerDisplayContainer" id="playerListDisplatReference">
-            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerServerDisplay" id="playerDisplayRefrence">
-            <h1 class="playerServerDisplayText" id="playerServerDisplayText" >Envist</h1>
-            <h1 class="playerServerUserDisplayText" id="playerServerUserDisplayText">@TheRealEnvist</h1>
-        </div>
         <div class="ServerError" id="serverError" hidden="true">
             <img src="/Assets/error.svg" class="ErrorIcon">
             Server Error
@@ -33,34 +28,109 @@
     </head>
     <body onload="onLoad()">
         
-        <div class="BubbleContainer">
+        <div class="BubbleContainer" style="z-index: 2;">
             <img src="/Assets/icon.png" class="IconDisplay">
             <h1 class="BubbleContainerTextIcon">| Frozen Labs</h1>
         </div>
-        <button class="BubbleContainerButton" onclick="serversButton()">
+        <button class="BubbleContainerButton" onclick="serversButton()" style="z-index: 2;">
             <h1>Servers</h1>
         </button>
-        <button class="BubbleContainerButton" onclick="gameInfoButton()">
+        <button class="BubbleContainerButton" onclick="gameInfoButton()" style="z-index: 2;">
             <h1>Game Information</h1>
         </button>
+
+        <div class="BubbleContainerCentered" style="z-index: 2; display: none;" id="KickWindow">
+            <div class="ListContentContainer">
+                <h1>Kick Player</h1>
+            <div class="serverDisplayLiner" style="margin-top: 26.5px;"></div>
+            <br>
+            <h1>Public Reason:</h1>
+            <textarea class="ReasonMessage" placeholder="Cheating, Swearing, Abuse, etc.." id="Reason"></textarea>
+            <br>
+            <h1>Private/Recorded Reason:</h1>
+            <textarea class="ReasonMessage" placeholder="Flying cheats, Said racial slurs, Harrased a player, etc.." id="RecordedReason"></textarea>
+            <br>
+            <div class="ListContentContainerSidewaysCentered" style=" margin-top: 10px;">
+                <button class="BubbleContainerButton" style="background-color: darkorange;" onclick="ActionButtonConfirm(`Kick`, this)" id="KickButton">
+                    <h1 style="color: white;" id="ButtonText">Kick</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 15px; margin-bottom: 5px; display: none;"></div>
+                </button>
+                <button class="BubbleContainerButton" style="background-color: grey;" onclick="ActionButtonCancel(`Kick`)">
+                    <h1 style="color: white;">Cancel</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                </button>
+            </div>
+
+            <br>
+            <h1>⚠️This action may be recorded...⚠️</h1>
+            
+            </div>
+        </div>
+        <div class="ModerationOverlay" id="ModerationOverlay" hidden></div>
         
         <div class="ServerMainContentContainer">
 
-            <div class="PlayerContentContainer" id="PlayerContentContainer">
-
-                <div class="dot-bricks" id="loadingIcon">
-                    
+            <div class="ListContentContainer">
+                <div class="PlayerContentContainerSideways" id="PlayerContentContainer">
+                    <div class="playerServerDisplayContainer" style="box-shadow: none;" id="playerListDisplatReference">
+                        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D76135976B62ED80CA42E90F36D72322-Png/150/150/AvatarHeadshot/Webp/noFilter" class="playerServerDisplay" id="playerDisplayRefrence">
+                        <h1 class="playerServerDisplayText" id="playerServerDisplayText" >Envist</h1>
+                        <h1 class="playerServerUserDisplayText" id="playerServerUserDisplayText">@TheRealEnvist</h1>
+                    </div>
+    
+                    <button class="BubbleContainerButton" style="background-color: darkred;" onclick="ActionButton(`Ban`)">
+                        <h1 style="color: white;">Ban</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: darkorange;" onclick="ActionButton(`Kick`)">
+                        <h1 style="color: white;">Kick</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: darkblue;" onclick="ActionButton(`Alert`)">
+                        <h1 style="color: white;">Alert</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: blue;" onclick="ActionButton(`Freeze`)">
+                        <h1 style="color: white;">Freeze</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: grey;" onclick="ActionButton(`Lock`)">
+                        <h1 style="color: white;">Lock</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: black;" onclick="ActionButton(`Blind`)">
+                        <h1 style="color: white;">Blind</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: yellowgreen;" onclick="ActionButton(`Track`)">
+                        <h1 style="color: white;">Track</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: peru;" onclick="ActionButton(`Notify`)">
+                        <h1 style="color: white;">Notify</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: cornflowerblue;" onclick="ActionButton(`Music`)">
+                        <h1 style="color: white;">Party Time 🎉</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                    <button class="BubbleContainerButton" style="background-color: indigo;" onclick="ActionButton(`Properties`)">
+                        <h1 style="color: white;">Properties</h1>
+                        <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                    </button>
+                </div>
+                
+                <div class="LogsContentContainer" id="LogsContentContainer">
+                    <h1 style="color: rgb(10, 40, 66);">No actions agaisnt this user at this current moment...</h1>
                 </div>
             </div>
+
             <div class="RobloxChat" id="RobloxChat">
                 <div class="ChatContentContainer" id="ChatContentContainer">
-                
                     <div class="dot-bricks" id="loadingIcon"></div>
-                    
                 </div>  
-                <textarea class="RobloxChatMessage" placeholder="Come on engage with chat.."></textarea>
+                <textarea class="RobloxChatMessage" placeholder="Come on engage with the user.."></textarea>
             </div>
-                   
         </div>
     </body>
 

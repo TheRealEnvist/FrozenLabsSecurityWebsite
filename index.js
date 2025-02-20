@@ -138,14 +138,17 @@ async function onLoad(){
             if(!status["validation"]){
                 document.getElementById("loginButton").style.display = "flex";
                 document.getElementById("NotLoggedIn").hidden = false;
+                return;
             }
          }else{
             document.getElementById("loginButton").style.display = "flex";
             document.getElementById("NotLoggedIn").hidden = false;
+            return;
         }
     }else{
         document.getElementById("loginButton").style.display = "flex";
         document.getElementById("NotLoggedIn").hidden = false;
+        return;
     }
 
     if(params.get("ip")!=null){
