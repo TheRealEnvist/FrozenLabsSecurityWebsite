@@ -159,6 +159,14 @@ function serversButton(){
     window.location.href = newUrl;
 }
 
+function backButton(){
+    const newUrl = `${window.location.origin}/Server`;
+    console.log('Redirecting to:', newUrl);
+
+    // Redirect
+    window.location.href = newUrl;
+}
+
 async function onLoad(){
     document.getElementById('MessageTemplate').style.display = 'none';
     var UserPlate = document.getElementById("playerListDisplatReference")
