@@ -17,6 +17,116 @@ h1 {
     font-size: 16px;
 }
 
+
+/* Removes the increment and decrement arrows */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* For Firefox */
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.styled-CheckBox{
+  background-color: rgb(2, 21, 38);
+  outline-width: 3px;
+  border-radius: 5px;
+  outline-color: rgb(226, 226, 182);
+  outline-style: solid;
+  border-style: solid;
+  width: 25px;
+  height: 25px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+.styled-CheckBox:hover{
+  transform: scale(1.1);
+}
+.styled-CheckBox:active{
+  transform: scale(.9);
+}
+
+
+.styled-number{
+  width: 100px;
+  min-width: 100px;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgb(3, 52, 110);
+  color: rgb(226, 226, 182);
+  outline: none;
+  outline-width: 0px;
+  border: none;
+  padding: 5px;
+  display: flex;
+}
+
+.styled-date{
+  width: auto;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgb(2, 21, 38);
+  color: rgb(226, 226, 182);
+  outline: none;
+  outline-width: 0px;
+  border: none;
+  padding: 5px;
+  display: flex;
+}
+
+.styled-dropdown {
+  width: auto;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgb(3, 52, 110);
+  color: rgb(226, 226, 182);
+  outline: none;
+  outline-width: 0px;
+  border: none;
+  padding: 5px;
+  display: flex;
+}
+
+.styled-dropdown option {
+  width: auto;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: rgb(3, 52, 110);
+  color: rgb(226, 226, 182);
+  outline: none;
+  outline-width: 0px;
+  border: none;
+  padding: 5px;
+  display: flex;
+}
+
+.styled-dropdown:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+.TextButton{
+  background: none;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.TextButton:hover{
+  transform: scale(1.05);
+}
+
+.TextButton:active{
+  transform: scale(0.90);
+}
+
 .ErrorIcon{
   width: 100%;
   height: 100%;
@@ -73,6 +183,19 @@ h1 {
   backdrop-filter: blur(5px);  /* Apply blur effect to the background */
   z-index: 1;
   transition: all 0.25s ease;
+}
+
+.ListContentContainerSidewaysCenteredStylized{
+    display: flex;
+  justify-content: flex-start;
+
+  align-items: center;
+  align-self:center;
+  position: relative;
+  padding: 10px;
+  position: relative;
+  border-radius: 15px;
+  background-color: rgb(2, 21, 38);
 }
 
 .ListContentContainerSidewaysCentered {
@@ -617,7 +740,6 @@ h1 {
   box-shadow: 0px 0px 15px rgb(122, 188, 240);
   transform: scale(0.95);
 }
-
 
 .Rightcontainer {
   display: flex;

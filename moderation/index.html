@@ -69,6 +69,75 @@
             
             </div>
         </div>
+
+        <div class="BubbleContainerCentered" style="z-index: 2; display: none;" id="BanWindow">
+            <div class="ListContentContainer">
+                <h1>Ban Player</h1>
+            <div class="serverDisplayLiner" style="margin-top: 26.5px;"></div>
+            <br>
+            <div class="ListContentContainerSidewaysCenteredStylized" style=" margin-top: 5px;">
+                <h1>Ban API:</h1>
+            <select name="API" id="BanAPI" style="margin-left: 5px;" class="styled-dropdown" onchange="UpdateBanSettings(this)">
+                <option value="Roblox">Roblox</option>
+                <option value="Frozen Labs">Frozen Labs</option>
+              </select>
+            </div>
+            <br>
+            <h1>Public Reason:</h1>
+            <textarea class="ReasonMessage" placeholder="Cheating, Swearing, Abuse, etc.." id="Reason"></textarea>
+            <br>
+            <h1>Private/Recorded Reason:</h1>
+            <textarea class="ReasonMessage" placeholder="Flying cheats, Said racial slurs, Harrased a player, etc.." id="RecordedReason"></textarea>
+            <br>
+            <h1>Expire:</h1>
+            <div class="ListContentContainerSidewaysCenteredStylized" style=" margin-top: 5px;">
+                <button class="TextButton" onclick="MenuButtonPress(`Ban`,`TimeStamp`)">
+                    <h1>TimeStamp</h1>
+                </button>
+                <button class="TextButton" onclick="MenuButtonPress(`Ban`,`After`)">
+                    <h1>After</h1>
+                </button>
+                <button class="TextButton" onclick="MenuButtonPress(`Ban`,`Never`)">
+                    <h1>Never</h1>
+                </button>
+            </div>
+            <br>
+            <input type="date" id="TimeStamp" class="styled-date" style="display: flex;" onchange="MenuItemChanged(`Ban`,this, this.value)">
+            <div class="ListContentContainerSidewaysCenteredStylized" id="BanAfter" style=" margin-top: 5px; display: none;">
+                <input type="number" id="BanNumberSelector" class="styled-number" placeholder="123456789" onchange="MenuItemChanged(`Ban`,this, this.value)" value="1">
+                <select name="TimeRange" id="BanAfterType" style="margin-left: 5px;" class="styled-dropdown">
+                    <option value="Hours">Hours</option>
+                    <option value="Days">Days</option>
+                    <option value="Weeks">Weeks</option>
+                    <option value="Months">Months</option>
+                    <option value="Years">Years</option>
+                  </select>
+            </div>
+            <div class="BubbleContainerDark" id="PermaBan" style="display: none;">Ban indefidently</div>
+            <br>
+            <div class="ListContentContainerSidewaysCenteredStylized" id="BanAltsSection" style=" margin-top: 10px;">
+                <h1 style="margin-right: 3px;">Ban Alts</h1>
+                <h1 style="margin-right: 10px;">:</h1>
+                <button class="styled-CheckBox" id="BanAlts" onclick="CheckBox(this)" >
+            </div>
+            <br>
+            <div class="ListContentContainerSidewaysCentered" style=" margin-top: 10px;">
+                <button class="BubbleContainerButton" id="ConfirmBanButton" style="background-color: darkred;" onclick="ActionButtonConfirm(`Ban`, this)">
+                    <h1 style="color: white;" id="ButtonText">Ban</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                </button>
+                <button class="BubbleContainerButton" style="background-color: grey;" onclick="ActionButtonCancel(`Ban`)">
+                    <h1 style="color: white;">Cancel</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                </button>
+            </div>
+
+            <br>
+            <h1>⚠️This action may be recorded...⚠️</h1>
+            
+            </div>
+        </div>
+
         <div class="ModerationOverlay" id="ModerationOverlay" hidden></div>
         
         <div class="ServerMainContentContainer">

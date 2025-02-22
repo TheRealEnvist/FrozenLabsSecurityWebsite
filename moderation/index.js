@@ -19,6 +19,8 @@ var AwaitingActionCompletionAction;
 
 var ConnectionID;
 
+var SelectedBanLength = "TimeStamp"
+
 async function connect() {
 
     const connectionkey = (await getRequest(apiService+`games/${gameID}/ConnectionKey/${getCookie("webtoken")}/`))["key"]
@@ -37,6 +39,9 @@ async function connect() {
         console.log("Action completed recevied")
         console.log(message);
         if(message["actionID"] == AwaitingActionCompletion){
+            if(AwaitingActionCompletionAction == "Kick" || AwaitingActionCompletionAction == "Ban"){
+                backButton()
+            }
             ActionButtonCancel(AwaitingActionCompletionAction)
         }
     });
@@ -108,11 +113,52 @@ async function postRequest(url, payload) {
     }
 }
 
+async function UpdateBanSettings(element) {
+    if(element.value == "Roblox"){
+        document.getElementById('BanWindow').querySelector("#BanAltsSection").style.display = null;
+    }else{
+        document.getElementById('BanWindow').querySelector("#BanAltsSection").style.display = "none";
+    }
+}
+
+async function CheckBox(element){
+    if(element.dataset.Checked == "true"){
+        element.dataset.Checked = "false";
+        element.style = null
+    }else{
+        element.dataset.Checked = "true";
+        element.style = "background-color: rgb(226, 226, 182);"
+    }
+}
+
+function getHoursBetweenDates(date1, date2) {
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = date2 - date1;
+  
+    // Convert milliseconds to hours
+    const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60); // 1000 ms per second, 60 seconds per minute, 60 minutes per hour
+  
+    return differenceInHours;
+  }
+
+  function addHoursToDate(date, hoursToAdd) {
+    const newDate = new Date(date); // Make a copy of the original date
+    newDate.setTime(newDate.getTime() + hoursToAdd * 60 * 60 * 1000); // Add hours in milliseconds
+    return newDate;
+  }
+
 async function ActionButton(action) {
     if(action=="Kick"){
         document.getElementById('KickWindow').style.display = null;
         document.getElementById('ModerationOverlay').hidden = null;
         var KickButtion = document.getElementById('KickWindow').querySelector(".ListContentContainerSidewaysCentered").querySelector("#KickButton")
+        KickButtion.querySelector("#loadingIcon").style.display = "none";
+        KickButtion.querySelector("#ButtonText").hidden = null;
+    }
+    if(action=="Ban"){
+        document.getElementById('BanWindow').style.display = null;
+        document.getElementById('ModerationOverlay').hidden = null;
+        var KickButtion = document.getElementById('BanWindow').querySelector(".ListContentContainerSidewaysCentered").querySelector("#ConfirmBanButton")
         KickButtion.querySelector("#loadingIcon").style.display = "none";
         KickButtion.querySelector("#ButtonText").hidden = null;
     }
@@ -134,11 +180,75 @@ async function ActionButtonConfirm(action, element) {
         AwaitingActionCompletion = actionAdd["actionID"];
         console.log(actionAdd);
     }
+    if(action=="Ban"){
+        var KickReason = document.getElementById('BanWindow').querySelector('#Reason').value
+        var RecordedReason = document.getElementById('BanWindow').querySelector('#RecordedReason').value
+        element.querySelector("#loadingIcon").style.display = null;
+        element.querySelector("#ButtonText").hidden = true;
+        AwaitingActionCompletionAction = action;
+        var HoursToBan;
+        var Data = {
+            player: TargetedPlayer, 
+            reason: KickReason, 
+            recordedReason: RecordedReason,
+            extraActionData: {
+                Hours: 0,
+                PermaBan: false,
+                TimeStampOfUnBan: null,
+                API: document.getElementById('BanWindow').querySelector('#BanAPI').value,
+                BanAlts: document.getElementById('BanWindow').querySelector("#BanAlts").dataset.Checked,
+                Reason: RecordedReason
+            } ,
+            action: action
+        };
+        if(SelectedBanLength == "TimeStamp"){
+            var SelectedTime = new Date(document.getElementById('BanWindow').querySelector('#TimeStamp').value)
+            var CurrentTime = new Date(Date.now());
+            var Hours = getHoursBetweenDates(CurrentTime,SelectedTime);
+            Data["extraActionData"]["Hours"] = Hours
+            Data["extraActionData"]["TimeStampOfUnBan"] = SelectedTime
+            
+        }
+        if(SelectedBanLength == "After"){
+            var CurrentTime = Date.now();
+            var multiplier = 1;
+            var type = document.getElementById('BanWindow').querySelector('#BanAfterType').value
+            if(type == "Days"){
+                multiplier = 24;
+            }
+            if(type == "Days"){
+                multiplier = 24;
+            }
+            if(type == "Weeks"){
+                multiplier = 168;
+            }
+            if(type == "Months"){
+                multiplier = 730;
+            }
+            if(type == "Years"){
+                multiplier = 8760;
+            }
+            var Hours = document.getElementById('BanWindow').querySelector('#BanNumberSelector').value * multiplier
+            Data["extraActionData"]["Hours"] = Hours 
+            Data["extraActionData"]["TimeStampOfUnBan"] = addHoursToDate(CurrentTime, Hours)
+        }
+        if(SelectedBanLength == "Never"){
+            Data["extraActionData"]["PermaBan"] = true            
+        }
+        var actionAdd = await postRequest(apiService+`games/${gameID}/server/${serverID}/action/${ConnectionID}/true`,Data)
+        AwaitingActionCompletion = actionAdd["actionID"];
+        console.log(actionAdd);
+        console.log(Data);
+    }
 }
 
 async function ActionButtonCancel(action) {
     if(action=="Kick"){
         document.getElementById('KickWindow').style.display = "none";
+        document.getElementById('ModerationOverlay').hidden = true;
+    }
+    if(action=="Ban"){
+        document.getElementById('BanWindow').style.display = "none";
         document.getElementById('ModerationOverlay').hidden = true;
     }
 }
@@ -150,6 +260,65 @@ async function ActionButtonCancel(action) {
     // Redirect
     window.location.href = newUrl;
 }
+
+async function setDate(Element) {
+    const today = new Date();
+
+    // Add one day to the current date
+    today.setDate(today.getDate() + 1);
+    Element.value = today.toISOString().split('T')[0];
+}
+
+async function MenuButtonPress(menu,action) {
+    if(menu == "Ban"){
+        document.getElementById('BanWindow').querySelector('#TimeStamp').style.display = "none";
+        document.getElementById('BanWindow').querySelector('#BanAfter').style.display = "none";
+        document.getElementById('BanWindow').querySelector('#PermaBan').style.display = "none";
+        SelectedBanLength = action;
+        if(action == "TimeStamp"){
+            document.getElementById('BanWindow').querySelector('#TimeStamp').style.display = null;
+            MenuItemChanged("Ban",document.getElementById('BanWindow').querySelector('#TimeStamp'),document.getElementById('BanWindow').querySelector('#TimeStamp').value);
+        }
+        if(action == "After"){
+            document.getElementById('BanWindow').querySelector('#BanAfter').style.display = null;
+            MenuItemChanged("Ban",document.getElementById('BanWindow').querySelector('#BanNumberSelector'),document.getElementById('BanWindow').querySelector('#BanNumberSelector').value);
+        }
+        if(action == "Never"){
+            document.getElementById('BanWindow').querySelector('#PermaBan').style.display = null;
+            MenuItemChanged("Ban",document.getElementById('BanWindow').querySelector('#PermaBan'),document.getElementById('BanWindow').querySelector('#PermaBan').value);
+        }
+    }
+}
+
+async function MenuItemChanged(menu,item,value) {
+    if(menu == "Ban"){
+        if(value == null && item.id != "PermaBan"){
+            document.getElementById('BanWindow').querySelector('#ConfirmBanButton').disabled = true;
+            document.getElementById('BanWindow').querySelector('#ConfirmBanButton').style.backgroundColor = "grey";
+        }
+        if(item.id == "TimeStamp"){
+            const currentTimestamp = Date.now();
+            const selectedDate = new Date(value);
+            if(selectedDate < currentTimestamp){
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').disabled = true;
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').style.backgroundColor = "grey";
+            }else{
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').disabled = null;
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').style.backgroundColor = "darkred";
+            }
+        }
+        if(item.id == "NumberSelector"){
+            if(value != null && value != 0){
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').disabled = null;
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').style.backgroundColor = "darkred";
+            }else{
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').disabled = true;
+                document.getElementById('BanWindow').querySelector('#ConfirmBanButton').style.backgroundColor = "grey";
+            }
+        }
+    }
+}
+
 
 function serversButton(){
     const newUrl = `${window.location.origin}/`;
@@ -173,4 +342,5 @@ async function onLoad(){
     UserPlate.querySelector("#playerServerUserDisplayText").textContent = "@"+TargetedPlayer
     UserPlate.querySelector("#playerServerDisplayText").textContent = TargetedPlayerDisplay
     UserPlate.querySelector("#playerDisplayRefrence").src = TargetedPlayerMugshot
+    setDate(document.getElementById('BanWindow').querySelector('#TimeStamp'));
 }
