@@ -162,6 +162,13 @@ async function ActionButton(action) {
         KickButtion.querySelector("#loadingIcon").style.display = "none";
         KickButtion.querySelector("#ButtonText").hidden = null;
     }
+    if(action=="Alert"){
+        document.getElementById('AlertWindow').style.display = null;
+        document.getElementById('ModerationOverlay').hidden = null;
+        var KickButtion = document.getElementById('AlertWindow').querySelector(".ListContentContainerSidewaysCentered").querySelector("#AlertButton")
+        KickButtion.querySelector("#loadingIcon").style.display = "none";
+        KickButtion.querySelector("#ButtonText").hidden = null;
+    }
 }
 
 async function ActionButtonConfirm(action, element) {
@@ -174,6 +181,21 @@ async function ActionButtonConfirm(action, element) {
         var actionAdd = await postRequest(apiService+`games/${gameID}/server/${serverID}/action/${ConnectionID}/true`,{
             player: TargetedPlayer, 
             reason: KickReason, 
+            recordedReason: RecordedReason, 
+            action: action
+        })
+        AwaitingActionCompletion = actionAdd["actionID"];
+        console.log(actionAdd);
+    }
+    if(action=="Alert"){
+        var AlertReason = document.getElementById('AlertWindow').querySelector('#Reason').value
+        var RecordedReason = document.getElementById('AlertWindow').querySelector('#RecordedReason').value
+        element.querySelector("#loadingIcon").style.display = null;
+        element.querySelector("#ButtonText").hidden = true;
+        AwaitingActionCompletionAction = action;
+        var actionAdd = await postRequest(apiService+`games/${gameID}/server/${serverID}/action/${ConnectionID}/true`,{
+            player: TargetedPlayer, 
+            reason: AlertReason, 
             recordedReason: RecordedReason, 
             action: action
         })
@@ -249,6 +271,10 @@ async function ActionButtonCancel(action) {
     }
     if(action=="Ban"){
         document.getElementById('BanWindow').style.display = "none";
+        document.getElementById('ModerationOverlay').hidden = true;
+    }
+    if(action=="Alert"){
+        document.getElementById('AlertWindow').style.display = "none";
         document.getElementById('ModerationOverlay').hidden = true;
     }
 }

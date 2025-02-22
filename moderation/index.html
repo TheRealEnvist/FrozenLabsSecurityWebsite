@@ -42,6 +42,34 @@
             <h1>Game Information</h1>
         </button>
 
+        <div class="BubbleContainerCentered" style="z-index: 2; display: none;" id="AlertWindow">
+            <div class="ListContentContainer">
+                <h1>Alert Player</h1>
+            <div class="serverDisplayLiner" style="margin-top: 26.5px;"></div>
+            <br>
+            <h1>Alert Text:</h1>
+            <textarea class="ReasonMessage" placeholder="Please refrain from..." id="Reason"></textarea>
+            <br>
+            <h1>Private/Recorded Reason:</h1>
+            <textarea class="ReasonMessage" placeholder="Player needed a..." id="RecordedReason"></textarea>
+            <br>
+            <div class="ListContentContainerSidewaysCentered" style=" margin-top: 10px;">
+                <button class="BubbleContainerButton" id="AlertButton" style="background-color: darkblue;" onclick="ActionButtonConfirm(`Alert`, this)">
+                    <h1 style="color: white;" id="ButtonText">Alert</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                </button>
+                <button class="BubbleContainerButton" style="background-color: grey;" onclick="ActionButtonCancel(`Alert`)">
+                    <h1 style="color: white;">Cancel</h1>
+                    <div class="dot-bricks" id="loadingIcon" style="margin-top: 10px; margin-bottom: 5px; display: none;"></div>
+                </button>
+            </div>
+
+            <br>
+            <h1>⚠️This action may be recorded...⚠️</h1>
+            
+            </div>
+        </div>
+
         <div class="BubbleContainerCentered" style="z-index: 2; display: none;" id="KickWindow">
             <div class="ListContentContainer">
                 <h1>Kick Player</h1>
